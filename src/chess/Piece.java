@@ -1,8 +1,11 @@
 //creates the abstract Piece class that the other pieces will extend
+package chess;
+
+import java.awt.Point;
+
 public class Piece {
-	import java.awt.Point;
-	
 	public String color;
+	
 	public Point location;
 	
 	//initializes the piece with a color (black or white) and a point location
