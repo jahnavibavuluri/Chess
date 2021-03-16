@@ -22,12 +22,12 @@ public class Board implements Cloneable {
 		pieces.add(new Pawn("white", 6,6,true));
 		pieces.add(new Pawn("white", 6,7,true));
 		
-		pieces.add(new Rook("white", 0,0,true));
-		pieces.add(new Rook("white", 0,7,true));
-		pieces.add(new Knight("white", 0,1));
-		pieces.add(new Knight("white", 0,6));
-		pieces.add(new Bishop("white", 0,2));
-		pieces.add(new Bishop("white", 0,5));
+		pieces.add(new Rook("white", 7,0,true));
+		pieces.add(new Rook("white", 7,7,true));
+		pieces.add(new Knight("white", 7,1));
+		pieces.add(new Knight("white", 7,6));
+		pieces.add(new Bishop("white", 7,2));
+		pieces.add(new Bishop("white", 7,5));
 		pieces.add(new Queen("white",7,3));
 		pieces.add(new King("white", 7,4));
 		
@@ -40,22 +40,19 @@ public class Board implements Cloneable {
 		pieces.add(new Pawn("black", 1,6,true));
 		pieces.add(new Pawn("black", 1,7,true));
 		
-		pieces.add(new Rook("black", 7,0,true));
-		pieces.add(new Rook("black", 7,7,true));
-		pieces.add(new Knight("black", 7,1));
-		pieces.add(new Knight("black", 7,6));
-		pieces.add(new Bishop("black", 7,2));
-		pieces.add(new Bishop("black", 7,5));
+		pieces.add(new Rook("black", 0,0,true));
+		pieces.add(new Rook("black", 0,7,true));
+		pieces.add(new Knight("black", 0,1));
+		pieces.add(new Knight("black", 0,6));
+		pieces.add(new Bishop("black", 3,4));
+		pieces.add(new Bishop("black", 0,5));
 		pieces.add(new Queen("black",0,3));
-		pieces.add(new King("white", 0,4));
+		pieces.add(new King("black", 0,4));
 		
-		
-		Pawn whitePawn = new Pawn("white", 0, 0, true);
-		pieces.add(whitePawn);
 		//init all pieces in their respective positions and populate pieces
 		
 	}
-	
+	@Override
 	public Board clone() {
 		//init a new board that is a clone --> need to do more research on how to implement Cloneable
 		return new Board();
@@ -133,6 +130,13 @@ public class Board implements Cloneable {
 		System.out.println(" a  b  c  d  e  f  g  h ");
 		System.out.println();
 		System.out.print(currentPlayer + "\'s turn: ");
+		
+		//System.out.println(this.getPieceAt(new Point(7,0)).getMoves(this));//wR
+		System.out.println(this.getPieceAt(new Point(3,4)).getMoves(this));//wB
+		//System.out.println(this.getPieceAt(new Point(7,3)).getMoves(this));//wQ
+		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
+		//System.out.println(this.getPieceAt(new Point(0,2)).getMoves(this));//bB
+		//System.out.println(this.getPieceAt(new Point(0,3)).getMoves(this));//bQ
 		
 	}
 
