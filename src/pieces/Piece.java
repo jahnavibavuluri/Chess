@@ -9,7 +9,7 @@ public abstract class Piece {
 	
 	public String color;
 	public Point location;
-	protected final String name;
+	public String name;
 	
 	//initializes the piece with a color (black or white) and a point location
 	public Piece (String color, int x, int y) {
@@ -25,6 +25,8 @@ public abstract class Piece {
 	public String color(Piece p) {
 		return color;
 	}
+	
+	public abstract String getName();
 	
 	public abstract ArrayList<Point> getMoves(Board b);
 	

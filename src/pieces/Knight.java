@@ -6,14 +6,18 @@ import board.Board;
 
 public class Knight extends Piece{
 
-	public final String name;
+	//public final String name;
 	
 	public Knight(String color, int x, int y) {
 		super(color, x, y);
 		if (color.equals("white"))
-			name = "wN";
+			name = "wN ";
 		else 
-			name = "bN";
+			name = "bN ";
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void basicMovement (Board b, ArrayList<Point> getMoves) {

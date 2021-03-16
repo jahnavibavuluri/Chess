@@ -6,14 +6,18 @@ import board.Board;
 
 public class Bishop extends Piece {
 	
-	public final String name;
+	//public final String name;
 
 	public Bishop(String color, int x, int y) {
 		super(color, x, y);
 		if (color.equals("white"))
-			name = "wB";
+			name = "wB ";
 		else 
-			name = "bB";
+			name = "bB ";
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void basicMovement (Board b, ArrayList<Point> getMoves) {

@@ -6,14 +6,18 @@ import board.Board;
 
 public class Queen extends Piece {
 
-	public final String name;
+	//public final String name;
 	
 	public Queen(String color, int x, int y) {
 		super(color, x, y);
 		if (color.equals("white"))
-			name = "wQ";
+			name = "wQ ";
 		else 
-			name = "bQ";
+			name = "bQ ";
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void lineMovement (Board b, ArrayList<Point> getMoves) {

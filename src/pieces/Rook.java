@@ -7,16 +7,20 @@ import board.Board;
 public class Rook extends Piece{
 
 	public boolean castling;
-	public final String name;
+	//public final String name;
 	
 	public Rook(String color, int x, int y, boolean castling) {
 		super(color,x,y);
 		this.castling = castling; 
 		//though it may seem that castling will always be set to false when a rook is first created, this is needed for promotion
 		if (color.equals("white"))
-			name = "wR";
+			name = "wR ";
 		else 
-			name = "bR";
+			name = "bR ";
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {

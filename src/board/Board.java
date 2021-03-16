@@ -109,7 +109,7 @@ public class Board implements Cloneable {
 				for (Piece p: pieces) {
 					if (p.location.equals(new Point(i,j))) {
 						//one if the pieces has a location at (i,j)
-						board[i][j] = "hi ";
+						board[i][j] = p.getName();
 						break;//this might not work idk how to do final variables for abstract classes and how inheritance works for it
 					} 
 				}
