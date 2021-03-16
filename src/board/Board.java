@@ -28,7 +28,7 @@ public class Board implements Cloneable {
 		pieces.add(new Knight("white", 7,6));
 		pieces.add(new Bishop("white", 7,2));
 		pieces.add(new Bishop("white", 7,5));
-		pieces.add(new Queen("white",4,4));
+		pieces.add(new Queen("white",7,3));
 		pieces.add(new King("white", 7,4));
 		
 		pieces.add(new Pawn("black", 1,0,true));
