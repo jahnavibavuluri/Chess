@@ -1,9 +1,10 @@
 //creates the abstract Piece class that the other pieces will extend
-package chess;
+package pieces;
 
 import java.awt.Point;
+import java.util.*;
 
-public class Piece {
+public abstract class Piece {
 	public String color;
 	
 	public Point location;
@@ -14,4 +15,14 @@ public class Piece {
 		this.location = new Point(x,y);
 	}
 	 
+	public Point getPoint(Piece p) {
+		return location;
+	}
+	
+	public String color(Piece p) {
+		return color;
+	}
+	
+	public abstract ArrayList<Point> getMoves(Piece p);
+	
 }
