@@ -25,6 +25,7 @@ public class Queen extends Piece {
 		int x = location.x; //7
 		int y = location.y; //0
 
+		//down
 		for(int i=x+1; i<8; i++){
 			Point p = new Point(i,y);
 			if (b.getPieceAt(p) == null){
@@ -37,7 +38,7 @@ public class Queen extends Piece {
 			}
 		}
 
-		
+		//up
 		for(int i=x-1; i>=0; i--){
 			Point p = new Point(i,y);
 			if (b.getPieceAt(p) == null){
@@ -50,7 +51,7 @@ public class Queen extends Piece {
 			}
 		}
 
-		
+		//right
 		for(int j=y+1; j<8; j++){
 			Point p = new Point(x,j);
 			if (b.getPieceAt(p) == null){
@@ -63,7 +64,8 @@ public class Queen extends Piece {
 			}
 		}
 
-		for(int j=y-1; j>=8; j--){
+		//left
+		for(int j=y-1; j>=0; j--){
 			Point p = new Point(x,j);
 			if (b.getPieceAt(p) == null){
 				getMoves.add(p);
@@ -78,65 +80,75 @@ public class Queen extends Piece {
 	
 	public void diagMovement (Board b, ArrayList<Point> getMoves) {
 		//adds diagonal moves to the list
-		int x = location.x;
-		int y = location.y;
+		int x = location.x;//0
+		int y = location.y;//2
 		
-		for (int i = x+1; i < 8; i++) {
-			
-			for (int j = y+1; j < 8; j++) {
-				// (+,+)
-				Point p = new Point(i,j);
-				if (b.getPieceAt(p) == null) {
-					getMoves.add(p);
-				} else if (b.getPieceAt(p).color.equals(this.color)) {
-					getMoves.add(p);
-					break;
-				} else {
-					break;
-				}
+		//right down
+		int i = x+1;
+		int j = y+1;
+		while (i<8 && j<8) {
+			Point p = new Point(i,j);
+			if (b.getPieceAt(p) == null) {
+				getMoves.add(p);
+			} else if (!(b.getPieceAt(p).color.equals(this.color))) {
+				getMoves.add(p);
+				break;
+			} else {
+				break;
 			}
-			
-			for (int j = y-1; j < 8; j--) {
-				// (+,-)
-				Point p = new Point(i,j);
-				if (b.getPieceAt(p) == null) {
-					getMoves.add(p);
-				} else if (b.getPieceAt(p).color.equals(this.color)) {
-					getMoves.add(p);
-					break;
-				} else {
-					break;
-				}
-			}
+			i++;
+			j++;
 		}
 		
+		//right up
+		i = x+1;
+		j = y-1;
+		while (i<8 && j>=0) {
+			Point p = new Point(i,j);
+			if (b.getPieceAt(p) == null) {
+				getMoves.add(p);
+			} else if (!(b.getPieceAt(p).color.equals(this.color))) {
+				getMoves.add(p);
+				break;
+			} else {
+				break;
+			}
+			i++;
+			j--;
+		}
 		
-		for (int i = x-1; i < 8; i++) {
-			for (int j = y+1; j < 8; j++) {
-				// (-,+)
-				Point p = new Point(i,j);
-				if (b.getPieceAt(p) == null) {
-					getMoves.add(p);
-				} else if (b.getPieceAt(p).color.equals(this.color)) {
-					getMoves.add(p);
-					break;
-				} else {
-					break;
-				}
+		//left down
+		i = x-1;
+		j = y+1;
+		while (i>=0 && j<8) {
+			Point p = new Point(i,j);
+			if (b.getPieceAt(p) == null) {
+				getMoves.add(p);
+			} else if (!(b.getPieceAt(p).color.equals(this.color))) {
+				getMoves.add(p);
+				break;
+			} else {
+				break;
 			}
-			
-			for (int j = y-1; j < 8; j--) {
-				// (-,-)
-				Point p = new Point(i,j);
-				if (b.getPieceAt(p) == null) {
-					getMoves.add(p);
-				} else if (b.getPieceAt(p).color.equals(this.color)) {
-					getMoves.add(p);
-					break;
-				} else {
-					break;
-				}
+			i--;
+			j++;
+		}
+		
+		//left up
+		i = x-1;
+		j = y-1;
+		while (i>=0 && j>=0) {
+			Point p = new Point(i,j);
+			if (b.getPieceAt(p) == null) {
+				getMoves.add(p);
+			} else if (!(b.getPieceAt(p).color.equals(this.color))) {
+				getMoves.add(p);
+				break;
+			} else {
+				break;
 			}
+			i--;
+			j--;
 		}
 	}
 	

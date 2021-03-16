@@ -25,6 +25,7 @@ public class Bishop extends Piece {
 		int x = location.x;//0
 		int y = location.y;//2
 		
+		//right down
 		int i = x+1;
 		int j = y+1;
 		while (i<8 && j<8) {
@@ -41,6 +42,7 @@ public class Bishop extends Piece {
 			j++;
 		}
 		
+		//right up
 		i = x+1;
 		j = y-1;
 		while (i<8 && j>=0) {
@@ -57,6 +59,7 @@ public class Bishop extends Piece {
 			j--;
 		}
 		
+		//left down
 		i = x-1;
 		j = y+1;
 		while (i>=0 && j<8) {
@@ -69,10 +72,11 @@ public class Bishop extends Piece {
 			} else {
 				break;
 			}
-			i++;
-			j--;
+			i--;
+			j++;
 		}
 		
+		//left up
 		i = x-1;
 		j = y-1;
 		while (i>=0 && j>=0) {
@@ -85,7 +89,7 @@ public class Bishop extends Piece {
 			} else {
 				break;
 			}
-			i++;
+			i--;
 			j--;
 		}
 	}

@@ -28,7 +28,7 @@ public class Board implements Cloneable {
 		pieces.add(new Knight("white", 7,6));
 		pieces.add(new Bishop("white", 7,2));
 		pieces.add(new Bishop("white", 7,5));
-		pieces.add(new Queen("white",7,3));
+		pieces.add(new Queen("white",4,4));
 		pieces.add(new King("white", 7,4));
 		
 		pieces.add(new Pawn("black", 1,0,true));
@@ -44,7 +44,7 @@ public class Board implements Cloneable {
 		pieces.add(new Rook("black", 0,7,true));
 		pieces.add(new Knight("black", 0,1));
 		pieces.add(new Knight("black", 0,6));
-		pieces.add(new Bishop("black", 3,4));
+		pieces.add(new Bishop("black", 0,2));
 		pieces.add(new Bishop("black", 0,5));
 		pieces.add(new Queen("black",0,3));
 		pieces.add(new King("black", 0,4));
@@ -119,11 +119,15 @@ public class Board implements Cloneable {
 			}
 		}
 		
+		System.out.println(" 0  1  2  3  4  5  6  7");
+		
 		for (int i = 0; i<8; i++) {
+			System.out.print(i);
 			for (int j = 0; j<8; j++) {
 				System.out.print(board[i][j]);
 			}
 			System.out.print(7-i+1);
+			
 			System.out.println();
 		}
 		
@@ -132,11 +136,11 @@ public class Board implements Cloneable {
 		System.out.print(currentPlayer + "\'s turn: ");
 		
 		//System.out.println(this.getPieceAt(new Point(7,0)).getMoves(this));//wR
-		System.out.println(this.getPieceAt(new Point(3,4)).getMoves(this));//wB
+		//System.out.println(this.getPieceAt(new Point(3,4)).getMoves(this));//wB
 		//System.out.println(this.getPieceAt(new Point(7,3)).getMoves(this));//wQ
 		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
 		//System.out.println(this.getPieceAt(new Point(0,2)).getMoves(this));//bB
-		//System.out.println(this.getPieceAt(new Point(0,3)).getMoves(this));//bQ
+		System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this));//bQ
 		
 	}
 
