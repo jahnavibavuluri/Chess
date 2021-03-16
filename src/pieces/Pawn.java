@@ -22,11 +22,57 @@ public class Pawn extends Piece{
 	public String getName() {
 		return name;
 	}
-	
+	//boolean firstMove = true -> 
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
 		//checks for the moves where the pawn can move up by one or two steps
-		return;
+		int x = location.x;
+		int y = location.y;
 		
+		if(this.color.equals("white") && (x == 6)) {
+			Point p = new Point(5,y);
+			Point p2 = new Point(4,y);
+			if (b.getPieceAt(p) == null){
+				getMoves.add(p);
+			}
+			if (b.getPieceAt(p) == null && b.getPieceAt(p2) == null){
+				getMoves.add(p2);
+			}
+		}else if(this.color.equals("white") && !(x == 6)) {
+			Point p3 = new Point(x-1,y);
+			if (b.getPieceAt(p3) == null){
+				getMoves.add(p3);
+			}
+		}
+		
+		if(this.color.equals("black") && (x == 1)) {
+			Point p = new Point(2,y);
+			Point p2 = new Point(3,y);
+			if (b.getPieceAt(p) == null){
+				getMoves.add(p);
+			}
+			if (b.getPieceAt(p) == null && b.getPieceAt(p2) == null){
+				getMoves.add(p2);
+			}
+		}else if(this.color.equals("black") && !(x == 1)) {
+			Point p3 = new Point(x+1,y);
+			if (b.getPieceAt(p3) == null){
+				getMoves.add(p3);
+			}
+		}
+		
+		/*
+		 for(int i=x-1; i>=0; i--){
+			Point p = new Point(i,y);
+			if (b.getPieceAt(p) == null){
+				getMoves.add(p);
+			} else if (!(b.getPieceAt(p).color.equals(this.color))) {
+				getMoves.add(p);
+				break;
+			} else {
+				break;
+			}
+		}
+		 */
 	}
 	
 	public void empassment(Board b, ArrayList<Point> getMoves) {
