@@ -25,6 +25,7 @@ public class Pawn extends Piece{
 	
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
 		//checks for the moves where the pawn can move up by one or two steps
+		return;
 		
 	}
 	
