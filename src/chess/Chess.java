@@ -9,6 +9,10 @@ public class Chess {
 		// TODO Auto-generated method stub
 		Board start = new Board();
 		start.drawBoard();
+		
+		//Board start_clone = start.clone();
+		//start_clone.drawBoard();
+		
 	}
 
 }

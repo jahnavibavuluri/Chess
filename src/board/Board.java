@@ -28,7 +28,7 @@ public class Board implements Cloneable {
 		pieces.add(new Knight("white", 7,6));
 		pieces.add(new Bishop("white", 7,2));
 		pieces.add(new Bishop("white", 7,5));
-		pieces.add(new Queen("white",4,4));
+		pieces.add(new Queen("white",7,3));
 		pieces.add(new King("white", 7,4));
 		
 		pieces.add(new Pawn("black", 1,0,true));
@@ -53,9 +53,8 @@ public class Board implements Cloneable {
 		
 	}
 	@Override
-	public Board clone() {
-		//init a new board that is a clone --> need to do more research on how to implement Cloneable
-		return new Board();
+	public Board clone()  {
+	    return this.clone();
 	}
 	
 	public void removePiece (Piece p) {
@@ -90,8 +89,12 @@ public class Board implements Cloneable {
 	
 	public Board tryMove(Piece piece, Point point) {
 		//make a clone and try the move on that board to check if the move will put the king in check
+		Board clone = this;
+		Piece pieceOnBoard = clone.getPieceAt(piece.location); //get the piece from the board
+		pieceOnBoard.location = point; //make the location of that piece point
+
 		//need to finish the clone implementation for this method
-		return new Board();
+		return clone;
 	}
 	
 	public void makeMove (Piece piece, Point point) {
@@ -140,7 +143,7 @@ public class Board implements Cloneable {
 		//System.out.println(this.getPieceAt(new Point(7,3)).getMoves(this));//wQ
 		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
 		//System.out.println(this.getPieceAt(new Point(0,2)).getMoves(this));//bB
-		System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this));//bQ
+		//System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this));//bQ
 		
 	}
 
