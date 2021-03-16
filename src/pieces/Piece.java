@@ -3,16 +3,19 @@ package pieces;
 
 import java.awt.Point;
 import java.util.*;
+import board.Board;
 
 public abstract class Piece {
-	public String color;
 	
+	public String color;
 	public Point location;
+	protected final String name;
 	
 	//initializes the piece with a color (black or white) and a point location
 	public Piece (String color, int x, int y) {
 		this.color = color;
 		this.location = new Point(x,y);
+		name = "";
 	}
 	 
 	public Point getPoint(Piece p) {
@@ -23,6 +26,6 @@ public abstract class Piece {
 		return color;
 	}
 	
-	public abstract ArrayList<Point> getMoves(Piece p);
+	public abstract ArrayList<Point> getMoves(Board b);
 	
 }
