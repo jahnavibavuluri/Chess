@@ -2,10 +2,11 @@
 package pieces;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.*;
 import board.Board;
 
-public abstract class Piece {
+public abstract class Piece implements Serializable{
 	
 	public String color;
 	public Point location;

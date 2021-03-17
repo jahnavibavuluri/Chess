@@ -2,6 +2,8 @@ package pieces;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import board.Board;
 
 public class Rook extends Piece{
@@ -86,10 +88,22 @@ public class Rook extends Piece{
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
 		basicMovement(b, moves);
-		/*for (Point p: moves) {
-			Board helper = b.tryMove(this.location, p);
-			if (helper.kingInCheck()) {
+		
+		Iterator<Point> iter = moves.iterator();
+
+		while (iter.hasNext()) {
+		    Point p = iter.next();
+		    Board helper = b.tryMove(new Point[] {this.location, p});
+		    if (helper.kingInCheck()) {
 				moves.remove(p);
+			}
+		}
+		/*
+		for (int i = 0; i<moves.size(); i++) {
+			Board helper = b.tryMove(new Point[] {this.location, moves.get(i)});
+			if (helper.kingInCheck()) {
+				moves.remove(moves.get(i));
+				i--;
 			}
 		}*/
 		return moves;

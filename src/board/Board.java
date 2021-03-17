@@ -1,10 +1,15 @@
 package board;
 
 import java.awt.Point;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 import pieces.*;
 
-public class Board implements Cloneable {
+public class Board implements Serializable {
 	
 	public ArrayList<Piece> pieces; //contains all the pieces currently in play
 	String currentPlayer; //the color of who is currently playing
@@ -17,12 +22,12 @@ public class Board implements Cloneable {
 		pieces.add(new Pawn("white", 6,1,true));
 		pieces.add(new Pawn("white", 6,2,true));
 		pieces.add(new Pawn("white", 6,3,true));
-		pieces.add(new Pawn("white", 6,4,true));
+		//pieces.add(new Pawn("white", 6,4,true));
 		pieces.add(new Pawn("white", 6,5,true));
 		pieces.add(new Pawn("white", 6,6,true));
 		pieces.add(new Pawn("white", 6,7,true));
 		
-		pieces.add(new Rook("white", 7,0,true));
+		pieces.add(new Rook("white", 5,4,true));
 		pieces.add(new Rook("white", 7,7,true));
 		pieces.add(new Knight("white", 7,1));
 		pieces.add(new Knight("white", 7,6));
@@ -46,18 +51,28 @@ public class Board implements Cloneable {
 		pieces.add(new Knight("black", 0,6));
 		pieces.add(new Bishop("black", 0,2));
 		pieces.add(new Bishop("black", 0,5));
-		pieces.add(new Queen("black",0,3));
+		pieces.add(new Queen("black",3,4));
 		pieces.add(new King("black", 0,4));
 		
 		//init all pieces in their respective positions and populate pieces
 		
 	}
-	@Override
-	public Board clone() throws CloneNotSupportedException {
-	    Board copy = (Board) super.clone();
-	    //copy.pieces = pieces;
-	    //copy.currentPlayer = currentPlayer;
-	    return copy;
+	
+	/*private Board (ArrayList<Piece> pieces, String currentPlayer) {
+		this.pieces = pieces;
+		this.currentPlayer = currentPlayer;
+	}*/
+	
+	public Board deepCopy() throws Exception {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bos);
+        out.writeObject(this);
+        
+        ByteArrayInputStream bis = new   ByteArrayInputStream(bos.toByteArray());
+        ObjectInputStream in = new ObjectInputStream(bis);
+        Board copied = (Board) in.readObject();
+        
+        return copied;
 	}
 	
 	public void removePiece (Piece p) {
@@ -131,9 +146,9 @@ public class Board implements Cloneable {
 	}
 	
 	public Board tryMove(Point[] points) {
-		//check if start location is NOT null
+	//check if start location is NOT null
 		try {
-			Board copy = this.clone();
+			Board copy = this.deepCopy();
 			if (this.getPieceAt(points[0]) == null) {
 				System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
 				return null;
@@ -149,40 +164,14 @@ public class Board implements Cloneable {
 				System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
 				return null;
 			}
-			
+				
 			copy.makeMove(points);
 			return copy;
-			
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println(e);
 			return null;
 		}
 		
-		
-		
-		/*
-		Board copy = this;
-		
-		if (this.getPieceAt(points[0]) == null) {
-			System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
-			return null;
-		}
-		//location not out of bounds
-		if (points[1].x > 7 || points[1].x < 0 || points[1].y < 0 || points[1].y > 7) {
-			System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
-			return null;
-		}
-		//move is in pieces getMoves arraylist
-		Piece moving = this.getPieceAt(points[0]);
-		if (!(moving.getMoves(this).contains(points[1]))) {
-			System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
-			return null;
-		}
-		
-		copy.makeMove(points);
-		return copy;
-		*/
-		//make a clone and try the move on that board to check if the move will put the king in check
 	}
 	
 	public void makeMove(Point[] points) {
@@ -235,7 +224,7 @@ public class Board implements Cloneable {
 		System.out.println();
 		System.out.println(currentPlayer + "\'s turn: ");
 		
-		//System.out.println(this.getPieceAt(new Point(7,0)).getMoves(this));//wR
+		System.out.println(this.getPieceAt(new Point(5,4)).getMoves(this));//wR
 		//System.out.println(this.getPieceAt(new Point(3,4)).getMoves(this));//wB
 		//System.out.println(this.getPieceAt(new Point(7,3)).getMoves(this));//wQ
 		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
