@@ -45,13 +45,40 @@ public class Knight extends Piece{
 		getMoves.add(OneDownTwoRight);
 		getMoves.add(OneDownTwoLeft);
 				
-		for (Point p : getMoves) { 		      
+		Iterator<Point> iter = getMoves.iterator();
+
+		while (iter.hasNext()) {
+		    Point p = iter.next();
+
+		    if (p.x>7 || p.x<0 || p.y>7 ||p.y<0)
+		        iter.remove();
+		}
+		
+		/*for (Point p : getMoves) { 		      
 			if(p.x>7 || p.x<0 || p.y>7 ||p.y<0) {
 				getMoves.remove(p);
 			}
+		}*/
+			
+		Iterator<Point> iter2 = getMoves.iterator();
+		
+		while (iter2.hasNext()) {
+		    Point p = iter2.next();
+		    
+		    if(this.color.equals("white")) {
+				if((b.getPieceAt(p) != null) && ((b.getPieceAt(p)).color).equals("white")){
+					iter2.remove();
+				}
+			}
+			if(this.color.equals("black")) {
+				if (b.getPieceAt(p) != null && ((b.getPieceAt(p))).color.equals("black")){
+					iter2.remove();
+				}
+			}
 		}
-				
-		for (Point p : getMoves) {
+	}	
+		
+		/*for (Point p : getMoves) {
 			if(this.color.equals("white")) {
 				if (b.getPieceAt(p) != null && (b.getPieceAt(p)).equals("white")){
 					getMoves.remove(p);
@@ -62,8 +89,8 @@ public class Knight extends Piece{
 					getMoves.remove(p);
 				}
 			}
-		}	
-	}
+		}*/	
+	
 	
 	public ArrayList<Point> getMoves(Board b) {
 		//calls the above methods and finally checks if making this move will put its own king in check
