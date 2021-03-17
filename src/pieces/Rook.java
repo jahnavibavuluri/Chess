@@ -86,6 +86,12 @@ public class Rook extends Piece{
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
 		basicMovement(b, moves);
+		/*for (Point p: moves) {
+			Board helper = b.tryMove(this, p);
+			if (helper.kingInCheck()) {
+				moves.remove(p);
+			}
+		}*/
 		return moves;
 	}
 

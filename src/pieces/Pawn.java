@@ -37,7 +37,7 @@ public class Pawn extends Piece{
 			if (b.getPieceAt(p) == null && b.getPieceAt(p2) == null){
 				getMoves.add(p2);
 			}
-		}else if(this.color.equals("white") && !(x == 6)) {
+		}else if(this.color.equals("white") && !(x == 6) && (x!=0)) {
 			Point p3 = new Point(x-1,y);
 			if (b.getPieceAt(p3) == null){
 				getMoves.add(p3);
@@ -53,7 +53,7 @@ public class Pawn extends Piece{
 			if (b.getPieceAt(p) == null && b.getPieceAt(p2) == null){
 				getMoves.add(p2);
 			}
-		}else if(this.color.equals("black") && !(x == 1)) {
+		}else if(this.color.equals("black") && !(x == 1) && (x!=7)) {
 			Point p3 = new Point(x+1,y);
 			if (b.getPieceAt(p3) == null){
 				getMoves.add(p3);
@@ -82,12 +82,61 @@ public class Pawn extends Piece{
 	
 	public void capture (Board b, ArrayList<Point> getMoves) {
 		//checks if the pawn can capture a piece 
-		
+		int x = location.x;
+		int y = location.y;
+		//------------------------------------white capture--------------------------------------------------
+		if(this.color.equals("white") && ((y != 0) && (y != 7))){
+			Point left = new Point(x-1,y-1);
+			Point right = new Point(x-1,y+1);
+			if((b.getPieceAt(left) != null) && ((b.getPieceAt(left)).color.equals("black"))) {
+				getMoves.add(left);
+			}
+			if((b.getPieceAt(right) != null) && ((b.getPieceAt(right)).color.equals("black"))) {
+				getMoves.add(right);
+			}
+		}
+		if(this.color.equals("white") && ((y == 0))) {
+			Point right = new Point(x-1,y+1);
+			if((b.getPieceAt(right) != null) && ((b.getPieceAt(right)).color.equals("black"))) {
+				getMoves.add(right);
+			}
+		}
+		if(this.color.equals("white") && ((y == 7))) {
+			Point left = new Point(x-1,y-1);
+			if((b.getPieceAt(left) != null) && ((b.getPieceAt(left)).color.equals("black"))) {
+				getMoves.add(left);
+			}
+		}
+//------------------------------------black capture--------------------------------------------------		
+		if(this.color.equals("black") && ((y != 0) && (y != 7))){
+			Point left = new Point(x+1,y-1);
+			Point right = new Point(x+1,y+1);
+			if((b.getPieceAt(left) != null) && ((b.getPieceAt(left)).color.equals("white"))) {
+				getMoves.add(left);
+			}
+			if((b.getPieceAt(right) != null) && ((b.getPieceAt(right)).color.equals("white"))) {
+				getMoves.add(right);
+			}
+		}
+		if(this.color.equals("black") && ((y == 0))){
+			Point right = new Point(x+1,y+1);
+			if((b.getPieceAt(right) != null) && ((b.getPieceAt(right)).color.equals("white"))) {
+				getMoves.add(right);
+			}
+		}
+		if(this.color.equals("black") && ((y == 7))) {
+			Point left = new Point(x+1,y-1);
+			if((b.getPieceAt(left) != null) && ((b.getPieceAt(left)).color.equals("white"))) {
+				getMoves.add(left);
+			}
+		}
 	}
 	
 	public ArrayList<Point> getMoves(Board b) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
+		basicMovement(b, moves);
+		capture(b, moves);
 		return moves;
 	}
 

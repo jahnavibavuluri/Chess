@@ -1,5 +1,7 @@
 package chess;
 
+import java.awt.Point;
+
 import board.Board;
 import pieces.*;
 
@@ -9,6 +11,15 @@ public class Chess {
 		// TODO Auto-generated method stub
 		Board start = new Board();
 		start.drawBoard();
+		
+		Point[] a = start.move("g5", "h6");
+		//System.out.println(a[0]);
+		//System.out.println(a[1]);
+		
+		//start.makeMove(new Point(6,3), new Point(4,3));
+		//start.drawBoard();
+		//start.makeMove(new Point(1,4), new Point(3,4));
+		//start.drawBoard();
 		
 		//Board start_clone = start.clone();
 		//start_clone.drawBoard();

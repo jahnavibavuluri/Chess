@@ -87,18 +87,74 @@ public class Board implements Cloneable {
 		return false;
 	}
 	
-	public Board tryMove(Piece piece, Point point) {
-		//make a clone and try the move on that board to check if the move will put the king in check
-		Board clone = this;
-		Piece pieceOnBoard = clone.getPieceAt(piece.location); //get the piece from the board
-		pieceOnBoard.location = point; //make the location of that piece point
-
-		//need to finish the clone implementation for this method
-		return clone;
+	public int letterToNumber(String s) {
+		switch (s) {
+		case "a":
+			return 0;
+		case "b":
+			return 1;
+		case "c":
+			return 2;
+		case "d":
+			return 3;
+		case "e":
+			return 4;
+		case "f":
+			return 5;
+		case "g":
+			return 6;
+		case "h":
+			return 7;
+		}
+		return -1;
 	}
 	
-	public void makeMove (Piece piece, Point point) {
+	public Point[] move(String start, String end) {
+		//takes the user's input and converts them into Points
+		Point startPoint = new Point();
+		Point endPoint = new Point();
+		Point[] m = new Point[2];
 		
+		startPoint.y = this.letterToNumber(start.substring(0,1));
+		endPoint.y = this.letterToNumber(end.substring(0,1));
+		
+		startPoint.x = 7-(Integer.parseInt(start.substring(1,2)))+1;
+		endPoint.x = 7-(Integer.parseInt(end.substring(1,2)))+1;
+		
+		m[0] = startPoint;
+		m[1] = endPoint;
+		
+		return m;
+	}
+	
+	public Board tryMove(Point[] points) throws IllegalArgumentException{
+		//check if start location is NOT null
+		if (this.getPieceAt(points[0]) == null)
+			throw new IllegalArgumentException("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+		//location not out of bounds
+		if (points[1].x > 7 || points[1].x < 0 || points[1].y < 0 || points[1].y > 7) {
+			throw new IllegalArgumentException("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+		}
+		//own king not in check
+		
+		//move is in pieces getMoves arraylist
+		
+		
+		//make a clone and try the move on that board to check if the move will put the king in check
+		return new Board();
+	}
+	
+	public void makeMove(Point[] points) {
+		Piece pieceOnBoard = this.getPieceAt(points[0]); //this is the piece we are moving
+		if (this.getPieceAt(points[1]) != null) { //this IS a capture
+			pieces.remove(this.getPieceAt(points[1])); //remove the captured piece
+		}
+		pieceOnBoard.location = points[1]; //move piece to end
+		
+		if (currentPlayer.equals("White"))
+			currentPlayer = "Black";
+		else
+			currentPlayer = "White";
 	}
 	
 	public void drawBoard() {
@@ -134,9 +190,9 @@ public class Board implements Cloneable {
 			System.out.println();
 		}
 		
-		System.out.println(" a  b  c  d  e  f  g  h ");
+		System.out.println("  a  b  c  d  e  f  g  h ");
 		System.out.println();
-		System.out.print(currentPlayer + "\'s turn: ");
+		System.out.println(currentPlayer + "\'s turn: ");
 		
 		//System.out.println(this.getPieceAt(new Point(7,0)).getMoves(this));//wR
 		//System.out.println(this.getPieceAt(new Point(3,4)).getMoves(this));//wB
@@ -144,6 +200,8 @@ public class Board implements Cloneable {
 		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
 		//System.out.println(this.getPieceAt(new Point(0,2)).getMoves(this));//bB
 		//System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this));//bQ
+		System.out.println(this.getPieceAt(new Point(7,1)).getMoves(this));
+		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));
 		
 	}
 
