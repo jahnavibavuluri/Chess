@@ -87,7 +87,7 @@ public class Rook extends Piece{
 		ArrayList<Point> moves = new ArrayList<Point>();
 		basicMovement(b, moves);
 		/*for (Point p: moves) {
-			Board helper = b.tryMove(this, p);
+			Board helper = b.tryMove(this.location, p);
 			if (helper.kingInCheck()) {
 				moves.remove(p);
 			}

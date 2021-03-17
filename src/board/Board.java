@@ -53,8 +53,11 @@ public class Board implements Cloneable {
 		
 	}
 	@Override
-	public Board clone()  {
-	    return this.clone();
+	public Board clone() throws CloneNotSupportedException {
+	    Board copy = (Board) super.clone();
+	    //copy.pieces = pieces;
+	    //copy.currentPlayer = currentPlayer;
+	    return copy;
 	}
 	
 	public void removePiece (Piece p) {
@@ -127,21 +130,59 @@ public class Board implements Cloneable {
 		return m;
 	}
 	
-	public Board tryMove(Point[] points) throws IllegalArgumentException{
+	public Board tryMove(Point[] points) {
 		//check if start location is NOT null
-		if (this.getPieceAt(points[0]) == null)
-			throw new IllegalArgumentException("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+		try {
+			Board copy = this.clone();
+			if (this.getPieceAt(points[0]) == null) {
+				System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+				return null;
+			}
+			//location not out of bounds
+			if (points[1].x > 7 || points[1].x < 0 || points[1].y < 0 || points[1].y > 7) {
+				System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+				return null;
+			}
+			//move is in pieces getMoves array list
+			Piece moving = this.getPieceAt(points[0]);
+			if (!(moving.getMoves(this).contains(points[1]))) {
+				System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+				return null;
+			}
+			
+			copy.makeMove(points);
+			return copy;
+			
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		
+		/*
+		Board copy = this;
+		
+		if (this.getPieceAt(points[0]) == null) {
+			System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+			return null;
+		}
 		//location not out of bounds
 		if (points[1].x > 7 || points[1].x < 0 || points[1].y < 0 || points[1].y > 7) {
-			throw new IllegalArgumentException("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+			System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+			return null;
 		}
-		//own king not in check
-		
 		//move is in pieces getMoves arraylist
+		Piece moving = this.getPieceAt(points[0]);
+		if (!(moving.getMoves(this).contains(points[1]))) {
+			System.out.println("Illegal move, try again \n" + currentPlayer + "\'s turn: ");
+			return null;
+		}
 		
-		
+		copy.makeMove(points);
+		return copy;
+		*/
 		//make a clone and try the move on that board to check if the move will put the king in check
-		return new Board();
 	}
 	
 	public void makeMove(Point[] points) {
@@ -200,8 +241,8 @@ public class Board implements Cloneable {
 		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
 		//System.out.println(this.getPieceAt(new Point(0,2)).getMoves(this));//bB
 		//System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this));//bQ
-		System.out.println(this.getPieceAt(new Point(7,1)).getMoves(this));
-		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));
+		//System.out.println(this.getPieceAt(new Point(7,1)).getMoves(this));
+		//System.out.println(this.getPieceAt(new Point(7,0)).getMoves(this));
 		
 	}
 

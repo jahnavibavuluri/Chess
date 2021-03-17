@@ -71,7 +71,7 @@ public class Knight extends Piece{
 				}
 			}
 			if(this.color.equals("black")) {
-				if (b.getPieceAt(p) != null && ((b.getPieceAt(p))).color.equals("black")){
+				if (b.getPieceAt(p) != null && ((b.getPieceAt(p)).color).equals("black")){
 					iter2.remove();
 				}
 			}

@@ -12,9 +12,12 @@ public class Chess {
 		Board start = new Board();
 		start.drawBoard();
 		
-		Point[] a = start.move("g5", "h6");
+		Point[] a = start.move("e2", "e4");
 		//System.out.println(a[0]);
 		//System.out.println(a[1]);
+		Board clone = start.tryMove(a);
+		clone.drawBoard();
+		start.drawBoard();
 		
 		//start.makeMove(new Point(6,3), new Point(4,3));
 		//start.drawBoard();
