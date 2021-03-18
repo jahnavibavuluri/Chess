@@ -29,6 +29,6 @@ public abstract class Piece implements Serializable{
 	
 	public abstract String getName();
 	
-	public abstract ArrayList<Point> getMoves(Board b);
+	public abstract ArrayList<Point> getMoves(Board b, boolean check);
 	
 }

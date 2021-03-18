@@ -152,11 +152,24 @@ public class Queen extends Piece {
 		}
 	}
 	
-	public ArrayList<Point> getMoves(Board b) {
+	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
 		lineMovement(b,moves);
 		diagMovement(b,moves);
+		
+		Iterator<Point> iter = moves.iterator();
+
+		if (check) {
+			while (iter.hasNext()) {
+			    Point p = iter.next();
+			    Board helper = b.tryMove(new Point[] {this.location, p});
+			    if (helper.kingInCheck()) {
+			    	iter.remove();
+				}
+			}
+		}
+		
 		return moves;
 	}
 

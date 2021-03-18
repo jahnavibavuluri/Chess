@@ -84,20 +84,25 @@ public class Rook extends Piece{
 		
 	}
 	
-	public ArrayList<Point> getMoves(Board b) {
+	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
 		basicMovement(b, moves);
 		
 		Iterator<Point> iter = moves.iterator();
 
-		while (iter.hasNext()) {
-		    Point p = iter.next();
-		    Board helper = b.tryMove(new Point[] {this.location, p});
-		    if (helper.kingInCheck()) {
-				moves.remove(p);
+		if (check) {
+			while (iter.hasNext()) {
+			    Point p = iter.next();
+			    Board helper = b.tryMove(new Point[] {this.location, p});
+			    //helper.drawBoard();
+			    if (helper.kingInCheck()) {
+			    	iter.remove();
+			    	//System.out.println("removing!");
+				}
 			}
 		}
+		
 		/*
 		for (int i = 0; i<moves.size(); i++) {
 			Board helper = b.tryMove(new Point[] {this.location, moves.get(i)});
@@ -106,6 +111,7 @@ public class Rook extends Piece{
 				i--;
 			}
 		}*/
+		//System.out.println(moves.toString());
 		return moves;
 	}
 
