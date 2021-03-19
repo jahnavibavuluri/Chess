@@ -23,37 +23,37 @@ public class Board implements Serializable {
 		pieces.add(new Pawn("white", 6,1,true));
 		pieces.add(new Pawn("white", 6,2,true));
 		pieces.add(new Pawn("white", 6,3,true));
-		pieces.add(new Pawn("white", 1,3,true));
+		pieces.add(new Pawn("white", 6,4,true));
 		pieces.add(new Pawn("white", 6,5,true));
 		pieces.add(new Pawn("white", 6,6,true));
-		pieces.add(new Pawn("white", 4,7,true));
+		//pieces.add(new Pawn("white", 6,7,true));
 		
 		pieces.add(new Rook("white", 7,0,true));
 		pieces.add(new Rook("white", 7,7,true));
-		//pieces.add(new Knight("white", 7,1));
+		pieces.add(new Knight("white", 7,1));
 		pieces.add(new Knight("white", 7,6));
 		pieces.add(new Bishop("white", 7,2));
-		//pieces.add(new Bishop("white", 7,5));
-		//pieces.add(new Queen("white",7,3));
-		pieces.add(new King("white", 7,4));
+		pieces.add(new Bishop("white", 7,5));
+		pieces.add(new Queen("white",7,3));
+		pieces.add(new King("white", 7,4, true));
 		
-		pieces.add(new Pawn("black", 3,0,true));
+		pieces.add(new Pawn("black", 1,0,true));
 		pieces.add(new Pawn("black", 1,1,true));
 		pieces.add(new Pawn("black", 1,2,true));
-		//pieces.add(new Pawn("black", 1,3,true));
-		pieces.add(new Pawn("black", 3,4,true));
+		pieces.add(new Pawn("black", 1,3,true));
+		pieces.add(new Pawn("black", 1,4,true));
 		pieces.add(new Pawn("black", 1,5,true));
 		pieces.add(new Pawn("black", 1,6,true));
 		pieces.add(new Pawn("black", 1,7,true));
 		
-		//pieces.add(new Rook("black", 0,0,true));
+		pieces.add(new Rook("black", 0,0,true));
 		pieces.add(new Rook("black", 0,7,true));
-		pieces.add(new Knight("black", 2,2));
-		//pieces.add(new Knight("black", 0,5));
+		pieces.add(new Knight("black", 0,1));
+		pieces.add(new Knight("black", 0,5));
 		pieces.add(new Bishop("black", 0,2));
 		pieces.add(new Bishop("black", 0,6));
-		//pieces.add(new Queen("black",0,4));
-		pieces.add(new King("black", 2,5));
+		pieces.add(new Queen("black",0,3));
+		pieces.add(new King("black", 0,4,true));
 		
 		//init all pieces in their respective positions and populate pieces
 		
@@ -212,11 +212,25 @@ public class Board implements Serializable {
 			pieces.remove(this.getPieceAt(points[1])); //remove the captured piece
 		}
 		pieceOnBoard.location = points[1]; //move piece to end
-		
+
 		if (currentPlayer.equals("White"))
 			currentPlayer = "Black";
 		else
 			currentPlayer = "White";
+	}
+	
+	public void firstMove(Point[] points) {
+		Piece pieceOnBoard = this.getPieceAt(points[1]);
+		if (pieceOnBoard instanceof Rook) {
+			this.addPiece(new Rook(currentPlayer.toLowerCase(), points[1].x, points[1].y, false));
+			this.removePiece(pieceOnBoard);
+		}
+		
+		//if king is being moved, a new king is add to account for the false castling boolean
+		if (pieceOnBoard instanceof King) {
+			this.addPiece(new King(currentPlayer.toLowerCase(), points[1].x, points[1].y, false));
+			this.removePiece(pieceOnBoard);
+		}
 	}
 	
 	public boolean checkPromotion(Point[] points) {
@@ -247,8 +261,24 @@ public class Board implements Serializable {
 	}
 
 	public boolean checkmate() {
+		
+		ArrayList<Point> white = new ArrayList<Point>();
+		ArrayList<Point> black = new ArrayList<Point>();
+		
+		for (Piece p:pieces) {
+			if (p.color.equals("white")) {
+				for (Point point: p.getMoves(this, true)) {
+					white.add(point);
+				}
+			}
+			else 
+				for (Point point: p.getMoves(this, true)) {
+					black.add(point);
+				}
+		}
+		
 		//returns true if a player is checkmated
-		return false;
+		return (white.size() == 0 || black.size() == 0) ? true:false;
 	}
 
 	
@@ -288,10 +318,11 @@ public class Board implements Serializable {
 		System.out.println("  a  b  c  d  e  f  g  h ");
 		System.out.println();
 		//call check to print out "Check"
-		if (this.check() != null)
-			System.out.println("Check");
 		
-		System.out.println(currentPlayer + "\'s turn: ");
+		if (this.check() != null && !this.checkmate())
+			System.out.println("Check");
+		if (!this.checkmate())
+			System.out.println(currentPlayer + "\'s turn: ");
 		
 		//this.getPieceAt(new Point(5,4)).getMoves(this);;
 		

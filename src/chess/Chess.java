@@ -15,50 +15,98 @@ public class Chess {
 		Scanner scanner = new Scanner(System.in);
 		game.drawBoard();
 		
-		while (!game.checkmate()) {
-			//game.drawBoard();
+		boolean resign = false;
+		boolean drawPrompted = false;
+		boolean draw = false;
+		
+		for (Piece p: game.pieces) {
+			if (p instanceof Rook || p instanceof King)
+				System.out.println(p.toString());
+		}
+		
+		while (!game.checkmate() && !resign && !draw) {
 			
 			String input = scanner.nextLine();
-			Point[] move = game.move(input.substring(0,2), input.substring(3,5));
+			if (input.equals("resign") && !drawPrompted) {
+				resign = true;
+				break;
+			} 
 			
-			if (game.isValidMove(move)) {
-				if (game.checkPromotion(move)) {
-					//System.out.println("this is a promotion move!");
-					if (input.length() ==  7) {
-						//can either be Q, N, R, B
-						switch (input.charAt(6)) {
-							case 'Q':
-								game.promotion(new Queen(game.currentPlayer.toLowerCase(),0,0), move);
-								game.drawBoard();
-								break;
-							case 'N':
-								game.promotion(new Knight(game.currentPlayer.toLowerCase(),0,0), move);
-								game.drawBoard();
-								break;
-							case 'R':
-								game.promotion(new Rook(game.currentPlayer.toLowerCase(),0,0, false), move);
-								game.drawBoard();
-								break;
-							case 'B':
-								game.promotion(new Bishop(game.currentPlayer.toLowerCase(),0,0), move);
-								game.drawBoard();
-								break;
-							default:
-								System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
-								break;
-						}
-					} else {
-						game.promotion(new Queen(game.currentPlayer.toLowerCase(),0,0), move);
-						game.drawBoard();
-					}
+			//if the last move was a draw prompted by the opponent, the current player MUST accept and enter "draw"
+			if (drawPrompted) {
+				if (!input.equals("draw")) {
+					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+					//break;
 				} else {
-					game.makeMove(move);
-					game.drawBoard();
+					draw = true;
+					//System.out.println("draw");
+					break;
 				}
 			} else {
-				System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+				
+				Point[] move = game.move(input.substring(0,2), input.substring(3,5));
+				
+				
+				if (game.isValidMove(move)) {
+					if (game.checkPromotion(move)) {
+						//System.out.println("this is a promotion move!");
+						if (input.length() ==  7) {
+							//can either be Q, N, R, B
+							switch (input.charAt(6)) {
+								case 'Q':
+									game.promotion(new Queen(game.currentPlayer.toLowerCase(),0,0), move);
+									game.drawBoard();
+									break;
+								case 'N':
+									game.promotion(new Knight(game.currentPlayer.toLowerCase(),0,0), move);
+									game.drawBoard();
+									break;
+								case 'R':
+									game.promotion(new Rook(game.currentPlayer.toLowerCase(),0,0, false), move);
+									game.drawBoard();
+									break;
+								case 'B':
+									game.promotion(new Bishop(game.currentPlayer.toLowerCase(),0,0), move);
+									game.drawBoard();
+									break;
+								default:
+									System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+									break;
+							}
+						} else {
+							game.promotion(new Queen(game.currentPlayer.toLowerCase(),0,0), move);
+							game.drawBoard();
+						}
+					} else {
+						//if the move is valid and the user prompts a draw, drawPrompted equals true
+						if (input.length() == 11 && input.substring(6,11).equals("draw?")) {
+							drawPrompted = true;
+						}
+						
+						game.makeMove(move);
+						game.drawBoard();
+						game.firstMove(move);
+						
+						for (Piece p: game.pieces) {
+							if (p instanceof Rook || p instanceof King)
+								System.out.println(p.toString());
+						}
+					}
+				} else {
+					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+				}	
 			}
-			
+		}
+		
+		if (!draw && !resign) {
+			System.out.println("Checkmate");
+		}
+		
+		if (!draw) {
+			if (game.currentPlayer.toLowerCase().equals("white"))
+				System.out.println("Black wins");
+			else 
+				System.out.println("White wins");
 		}
 		
 		scanner.close();

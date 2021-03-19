@@ -114,5 +114,10 @@ public class Rook extends Piece{
 		//System.out.println(moves.toString());
 		return moves;
 	}
+	
+
+	public String toString() {
+		return "Rook: " + castling;
+	}
 
 }

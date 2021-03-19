@@ -6,14 +6,16 @@ import board.Board;
 
 public class King extends Piece{
 
-	//public final String name;
+	public boolean castling;
 	
-	public King(String color, int x, int y) {
+	public King(String color, int x, int y, boolean castling) {
 		super(color, x, y);
 		if (color.equals("white"))
 			name = "wK ";
 		else 
 			name = "bK ";
+		
+		this.castling = castling;
 	}
 	
 	public String getName() {
@@ -113,6 +115,10 @@ public class King extends Piece{
 		}
 		
 		return moves;
+	}
+	
+	public String toString() {
+		return "King: " + castling;
 	}
 
 }
