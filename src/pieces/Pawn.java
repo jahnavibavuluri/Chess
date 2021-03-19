@@ -6,23 +6,31 @@ import board.Board;
 
 public class Pawn extends Piece{
 	
-	public boolean firstMove;
+	public boolean enpassant;
 	//public final String name;
 
-	public Pawn(String color, int x, int y, boolean firstMove) {
+	public Pawn(String color, int x, int y, boolean enpassant) {
 		//initializes pawn as a piece with boolean firstMove
 		super(color,x,y);
-		this.firstMove = firstMove;
 		if (color.equals("white"))
 			name = "wp ";
 		else 
 			name = "bp ";
+		this.enpassant = enpassant;
 	}
 	
 	public String getName() {
 		return name;
 	}
-	//boolean firstMove = true -> 
+	
+	public boolean getEnpassant() {
+		return enpassant;
+	}
+	
+	public void setEnpassant(boolean b) {
+		this.enpassant = b;
+	}
+
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
 		//checks for the moves where the pawn can move up by one or two steps
 		int x = location.x;

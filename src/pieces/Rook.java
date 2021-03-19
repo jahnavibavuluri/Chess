@@ -25,6 +25,10 @@ public class Rook extends Piece{
 		return name;
 	}
 	
+	public void setCastling(boolean b) {
+		this.castling = b;
+	}
+	
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
 		//checks the basic horizontal and vertical movements of the rook
 		int x = location.x; //7

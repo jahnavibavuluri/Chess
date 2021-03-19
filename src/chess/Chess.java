@@ -19,10 +19,11 @@ public class Chess {
 		boolean drawPrompted = false;
 		boolean draw = false;
 		
+		/*
 		for (Piece p: game.pieces) {
 			if (p instanceof Rook || p instanceof King)
 				System.out.println(p.toString());
-		}
+		}*/
 		
 		while (!game.checkmate() && !resign && !draw) {
 			
@@ -83,14 +84,17 @@ public class Chess {
 							drawPrompted = true;
 						}
 						
-						game.makeMove(move);
-						game.drawBoard();
 						game.firstMove(move);
+						game.makeMove(move);
 						
+						game.drawBoard();
+						
+						
+						/*
 						for (Piece p: game.pieces) {
 							if (p instanceof Rook || p instanceof King)
 								System.out.println(p.toString());
-						}
+						}*/
 					}
 				} else {
 					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");

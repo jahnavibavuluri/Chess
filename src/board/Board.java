@@ -20,21 +20,21 @@ public class Board implements Serializable {
 		currentPlayer = "White";
 		pieces = new ArrayList<Piece>();
 		pieces.add(new Pawn("white", 6,0,true));
-		pieces.add(new Pawn("white", 6,1,true));
-		pieces.add(new Pawn("white", 6,2,true));
-		pieces.add(new Pawn("white", 6,3,true));
+		//pieces.add(new Pawn("white", 6,1,true));
+		//pieces.add(new Pawn("white", 6,2,true));
+		//pieces.add(new Pawn("white", 6,3,true));
 		pieces.add(new Pawn("white", 6,4,true));
-		pieces.add(new Pawn("white", 6,5,true));
+		//pieces.add(new Pawn("white", 6,5,true));
 		pieces.add(new Pawn("white", 6,6,true));
 		//pieces.add(new Pawn("white", 6,7,true));
 		
 		pieces.add(new Rook("white", 7,0,true));
 		pieces.add(new Rook("white", 7,7,true));
-		pieces.add(new Knight("white", 7,1));
-		pieces.add(new Knight("white", 7,6));
-		pieces.add(new Bishop("white", 7,2));
-		pieces.add(new Bishop("white", 7,5));
-		pieces.add(new Queen("white",7,3));
+		//pieces.add(new Knight("white", 7,1));
+		//pieces.add(new Knight("white", 7,6));
+		//pieces.add(new Bishop("white", 7,2));
+		//pieces.add(new Bishop("white", 7,5));
+		//pieces.add(new Queen("white",7,3));
 		pieces.add(new King("white", 7,4, true));
 		
 		pieces.add(new Pawn("black", 1,0,true));
@@ -48,22 +48,18 @@ public class Board implements Serializable {
 		
 		pieces.add(new Rook("black", 0,0,true));
 		pieces.add(new Rook("black", 0,7,true));
-		pieces.add(new Knight("black", 0,1));
-		pieces.add(new Knight("black", 0,5));
-		pieces.add(new Bishop("black", 0,2));
-		pieces.add(new Bishop("black", 0,6));
-		pieces.add(new Queen("black",0,3));
+		//pieces.add(new Knight("black", 0,1));
+		//pieces.add(new Knight("black", 0,5));
+		pieces.add(new Bishop("black", 4,0));
+		//pieces.add(new Bishop("black", 0,6));
+		//pieces.add(new Queen("black",5,5));
 		pieces.add(new King("black", 0,4,true));
 		
 		//init all pieces in their respective positions and populate pieces
 		
 	}
 	
-	/*private Board (ArrayList<Piece> pieces, String currentPlayer) {
-		this.pieces = pieces;
-		this.currentPlayer = currentPlayer;
-	}*/
-	
+//------------------------------------------------------deepCopy-------------------------------------------------------	
 	public Board deepCopy() throws Exception {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bos);
@@ -76,15 +72,16 @@ public class Board implements Serializable {
         return copied;
 	}
 	
+//------------------------------------------------------removePiece-------------------------------------------------------	
 	public void removePiece (Piece p) {
 		//this parameter might be changed to point to remove a piece at a specific location
 		pieces.remove(p);
 	}
-	
+//------------------------------------------------------addPiece-------------------------------------------------------	
 	public void addPiece (Piece p) {
 		pieces.add(p);
 	}
-	
+//------------------------------------------------------getPieceAt-------------------------------------------------------	
 	public Piece getPieceAt (Point p) {
 		for (Piece piece:pieces) {
 			if (piece.location.equals(p)) {
@@ -93,7 +90,8 @@ public class Board implements Serializable {
 		}
 		return null;
 	}
-	
+
+//------------------------------------------------------kingInCheck-------------------------------------------------------
 	public boolean kingInCheck () { //checks if the current players king is in check
 		for (Piece p: pieces) {
 			//System.out.println("the current player is: "+ currentPlayer);
@@ -119,12 +117,14 @@ public class Board implements Serializable {
 		return false;
 	}
 	
+//------------------------------------------------------check-------------------------------------------------------	
 	public Piece check() {
 		for (Piece p: pieces) {
 			//go through opposing teams pieces and check if currentPlayer king is in check
 			if (!((p.color).equals(currentPlayer.toLowerCase()))) {
 				for (Point point:p.getMoves(this, false)) {
 					if ((getPieceAt(point) instanceof King) && (getPieceAt(point)).color.equals(currentPlayer.toLowerCase())) {
+						kingInCheck = getPieceAt(point);
 						return getPieceAt(point);
 					}
 				}
@@ -133,6 +133,8 @@ public class Board implements Serializable {
 		return null;
 	}
 	
+
+//------------------------------------------------------letterToNumber-------------------------------------------------------	
 	public int letterToNumber(String s) {
 		switch (s) {
 		case "a":
@@ -155,6 +157,7 @@ public class Board implements Serializable {
 		return -1;
 	}
 	
+//------------------------------------------------------move-------------------------------------------------------	
 	public Point[] move(String start, String end) {
 		//takes the user's input and converts them into Points
 		Point startPoint = new Point();
@@ -173,6 +176,7 @@ public class Board implements Serializable {
 		return m;
 	}
 	
+//------------------------------------------------------isValidMove-------------------------------------------------------
 	//checks if the move is valid 
 	public boolean isValidMove(Point[] points) {
 		Piece moving = this.getPieceAt(points[0]);
@@ -191,6 +195,7 @@ public class Board implements Serializable {
 		return true;
 	}
 	
+//------------------------------------------------------tryMove-------------------------------------------------------
 	//make the move on a helper board that Pieces classes can use 
 	public Board tryMove(Point[] points) {
 	//check if start location is NOT null
@@ -206,6 +211,7 @@ public class Board implements Serializable {
 		
 	}
 	
+//------------------------------------------------------makeMove-------------------------------------------------------
 	public void makeMove(Point[] points) {
 		Piece pieceOnBoard = this.getPieceAt(points[0]); //this is the piece we are moving
 		if (this.getPieceAt(points[1]) != null) { //this IS a capture
@@ -219,20 +225,24 @@ public class Board implements Serializable {
 			currentPlayer = "White";
 	}
 	
+//------------------------------------------------------firstMove-------------------------------------------------------
 	public void firstMove(Point[] points) {
-		Piece pieceOnBoard = this.getPieceAt(points[1]);
+		Piece pieceOnBoard = this.getPieceAt(points[0]);
 		if (pieceOnBoard instanceof Rook) {
-			this.addPiece(new Rook(currentPlayer.toLowerCase(), points[1].x, points[1].y, false));
-			this.removePiece(pieceOnBoard);
+			((Rook) pieceOnBoard).setCastling(false);
+			//this.addPiece(new Rook(currentPlayer.toLowerCase(), points[0].x, points[0].y, false));
+			//this.removePiece(pieceOnBoard);
 		}
 		
 		//if king is being moved, a new king is add to account for the false castling boolean
 		if (pieceOnBoard instanceof King) {
-			this.addPiece(new King(currentPlayer.toLowerCase(), points[1].x, points[1].y, false));
-			this.removePiece(pieceOnBoard);
+			((King) pieceOnBoard).setCastling(false);
+			//this.addPiece(new King(currentPlayer.toLowerCase(), points[0].x, points[0].y, false));
+			//this.removePiece(pieceOnBoard);
 		}
 	}
 	
+//------------------------------------------------------checkPromotion-------------------------------------------------------
 	public boolean checkPromotion(Point[] points) {
 		if(this.getPieceAt(points[0]) instanceof Pawn && points[0].x == 1 && ((this.getPieceAt(points[0])).color).equals("white")) {
 			return true;
@@ -243,6 +253,7 @@ public class Board implements Serializable {
 		}
 	}
 	
+//------------------------------------------------------promotion-------------------------------------------------------
 	public void promotion(Piece promotionPiece, Point[] points) {
 		if(this.getPieceAt(points[1]) == null) {
 			pieces.remove(this.getPieceAt(points[0]));
@@ -260,6 +271,7 @@ public class Board implements Serializable {
 			currentPlayer = "White";
 	}
 
+//------------------------------------------------------checkmate-------------------------------------------------------
 	public boolean checkmate() {
 		
 		ArrayList<Point> white = new ArrayList<Point>();
@@ -281,7 +293,48 @@ public class Board implements Serializable {
 		return (white.size() == 0 || black.size() == 0) ? true:false;
 	}
 
+//------------------------------------------------------enpassant-------------------------------------------------------
+	public void enpassment(Point[] points) {
+		for(Piece p: pieces) {
+			if(p instanceof Pawn && p.color.equals(currentPlayer.toLowerCase())) {
+				((Pawn) p).setEnpassant(false);
+				/*
+				String temp = p.color;
+				int x = p.location.x;
+				int y = p.location.y;
+				this.removePiece(p);
+				Piece newPawn = new Pawn(temp,x,y,false);
+				pieces.add(newPawn);
+				*/
+			}
+		}
+			
+		Piece pawn = getPieceAt(points[0]);
+		if(pawn instanceof Pawn && pawn.color.equals("white")) {
+			if(points[1].x==4) {
+				String temp = pawn.color;
+				int x = pawn.location.x;
+				int y = pawn.location.y;
+				this.removePiece(pawn);
+				Piece newPawn = new Pawn(temp,x,y,true);
+				pieces.add(newPawn);
+						//public Pawn(String color, int x, int y, boolean firstMove)
+			}
+		}
+		if(pawn instanceof Pawn && pawn.color.equals("black")) {
+			if(points[1].x==3) {
+				String temp = pawn.color;
+				int x = pawn.location.x;
+				int y = pawn.location.y;
+				this.removePiece(pawn);
+				Piece newPawn = new Pawn(temp,x,y,true);
+				pieces.add(newPawn);
+			}
+		}
+	}
 	
+	
+//------------------------------------------------------drawBoard-------------------------------------------------------
 	public void drawBoard() {
 		String[][] board = new String[8][8];
 		
@@ -326,13 +379,7 @@ public class Board implements Serializable {
 		
 		//this.getPieceAt(new Point(5,4)).getMoves(this);;
 		
-		//System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this,true));//wB
-		//System.out.println(this.getPieceAt(new Point(7,3)).getMoves(this));//wQ
-		//System.out.println(this.getPieceAt(new Point(0,0)).getMoves(this));//bR
-		//System.out.println(this.getPieceAt(new Point(0,2)).getMoves(this));//bB
-		//System.out.println(this.getPieceAt(new Point(4,4)).getMoves(this));//bQ
-		//System.out.println(this.getPieceAt(new Point(7,1)).getMoves(this));
-		//System.out.println(this.getPieceAt(new Point(7,0)).getMoves(this));
+		//System.out.println(this.getPieceAt(new Point(7,4)).getMoves(this,false));//wB
 		
 	}
 
