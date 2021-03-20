@@ -424,14 +424,6 @@ public class Board implements Serializable {
 		if (!this.checkmate())
 			System.out.println(currentPlayer + "\'s turn: ");
 		
-		//this.getPieceAt(new Point(5,4)).getMoves(this);;
-		
-		
-		if (this.getPieceAt(new Point(3,4)) != null) {
-			System.out.println(this.getPieceAt(new Point(3,4)).getMoves(this,false));
-		}
-		//System.out.println(this.getPieceAt(new Point(7,4)).getMoves(this,false));//wB
-		
 	}
 
 	
