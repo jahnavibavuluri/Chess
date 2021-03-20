@@ -169,6 +169,36 @@ public class King extends Piece{
 		}
 		if (rooksThatCanCastle.isEmpty()) return;
 		
+		//checks that an opponents king does not put the blocks in check
+		Iterator<Piece> iter4 = rooksThatCanCastle.iterator();
+		while (iter4.hasNext()) {
+			Piece p = iter4.next();
+			//bottom left rook
+			if(p.location.y == 0 && p.location.x == 7) {
+				if(b.getPieceAt(new Point(6,2)) instanceof King || b.getPieceAt(new Point(6,1)) instanceof King) {
+					iter4.remove();
+				}
+			}
+			//bottom right rook
+			if(p.location.y == 7 && p.location.x == 7) {
+				if(b.getPieceAt(new Point(6,6)) instanceof King) {
+					iter4.remove();
+				}
+			}
+			//top left rook
+			if(p.location.y == 0 && p.location.x == 0) {
+				if(b.getPieceAt(new Point(1,1)) instanceof King || b.getPieceAt(new Point(1,2)) instanceof King) {
+					iter4.remove();
+				}
+			}
+			//top right rook
+			if(p.location.y == 7 && p.location.x == 0) {
+				if(b.getPieceAt(new Point(1,6)) instanceof King) {
+					iter4.remove();
+				}
+			}
+		}
+		
 		//FINALLY add the castling point to the array list moves
 		Iterator<Piece> iter3 = rooksThatCanCastle.iterator();
 		while(iter3.hasNext()) {
@@ -181,6 +211,7 @@ public class King extends Piece{
 				//System.out.println("ERROR: loop 3 should not go here");
 			}
 		}
+		
 	}
 	
 	

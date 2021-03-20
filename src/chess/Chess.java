@@ -83,18 +83,17 @@ public class Chess {
 						if (input.length() == 11 && input.substring(6,11).equals("draw?")) {
 							drawPrompted = true;
 						}
-						
-						game.firstMove(move);
-						game.makeMove(move);
-						
-						game.drawBoard();
-						
-						
-						/*
-						for (Piece p: game.pieces) {
-							if (p instanceof Rook || p instanceof King)
-								System.out.println(p.toString());
-						}*/
+
+						game.firstMove(move); //changes castling field for rook and king
+						game.enpassant(move); //changes enpassant field for pawn
+						if (game.checkEnpassant(move)) {
+							game.doEnpassant(move);
+							game.drawBoard();
+						} else {
+							game.doCastle(move); //moves the rook if its a castling move
+							game.makeMove(move); //makes the move
+							game.drawBoard(); //draws the board after move is made
+						}
 					}
 				} else {
 					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");

@@ -83,9 +83,87 @@ public class Pawn extends Piece{
 		 */
 	}
 	
-	public void empassment(Board b, ArrayList<Point> getMoves) {
+	public void empassant(Board b, ArrayList<Point> getMoves) {
 		//checks if the pawn has an opportunity for empassment 
+		int row = this.location.x;
+		int col = this.location.y;
 		
+		//check to the immediate right and left of this pawn
+		//edge case when pawn is in the 0th column
+//--------------------------------------------------white--------------------------------------------------
+		if (row == 3) {
+			//edge case when pawn in 0th col
+			if (col == 0) {
+				Piece p = b.getPieceAt(new Point(row, col+1));
+				if (p!= null 
+						&& p instanceof Pawn 
+						&& !(p.color).equals(this.color) 
+						&& ((Pawn) p).getEnpassant()) {
+					getMoves.add(new Point(row-1, col+1));
+				}
+			//edge case when pawn is in 7th row
+			} else if (col == 7) {
+				Piece p = b.getPieceAt(new Point(row, col-1));
+				if (p!= null 
+						&& p instanceof Pawn 
+						&& !(p.color).equals(this.color) 
+						&& ((Pawn) p).getEnpassant()) {
+					getMoves.add(new Point(row-1, col-1));
+				}
+			} else {
+				Piece right = b.getPieceAt(new Point(row, col+1));
+				Piece left = b.getPieceAt(new Point(row, col-1));
+				if (right!= null 
+						&& right instanceof Pawn 
+						&& !(right.color).equals(this.color) 
+						&& ((Pawn) right).getEnpassant()) {
+					getMoves.add(new Point(row-1, col+1));
+				}
+				if (left!= null 
+						&& left instanceof Pawn 
+						&& !(left.color).equals(this.color) 
+						&& ((Pawn) left).getEnpassant()) {
+					getMoves.add(new Point(row-1, col-1));
+				}
+			}
+		}
+		
+//---------------------------------------------------black---------------------------------------------------
+		if (row == 4) {
+			if (col == 0) {
+				Piece p = b.getPieceAt(new Point(row, col+1));
+				if (p!= null 
+						&& p instanceof Pawn 
+						&& !(p.color).equals(this.color) 
+						&& ((Pawn) p).getEnpassant()) {
+					getMoves.add(new Point(row+1, col+1));
+				}
+			//edge case when pawn is in 7th row
+			} else if (col == 7) {
+				Piece p = b.getPieceAt(new Point(row, col-1));
+				if (p!= null 
+						&& p instanceof Pawn 
+						&& !(p.color).equals(this.color) 
+						&& ((Pawn) p).getEnpassant()) {
+					getMoves.add(new Point(row+1, col-1));
+				}
+			} else {
+				Piece right = b.getPieceAt(new Point(row, col+1));
+				Piece left = b.getPieceAt(new Point(row, col-1));
+				if (right!= null 
+						&& right instanceof Pawn 
+						&& !(right.color).equals(this.color) 
+						&& ((Pawn) right).getEnpassant()) {
+					getMoves.add(new Point(row+1, col+1));
+				}
+				if (left!= null 
+						&& left instanceof Pawn 
+						&& !(left.color).equals(this.color) 
+						&& ((Pawn) left).getEnpassant()) {
+					getMoves.add(new Point(row+1, col-1));
+				}
+			}
+		}
 	}
 	
 	public void capture (Board b, ArrayList<Point> getMoves) {
@@ -145,6 +223,7 @@ public class Pawn extends Piece{
 		ArrayList<Point> moves = new ArrayList<Point>();
 		basicMovement(b, moves);
 		capture(b, moves);
+		empassant(b, moves);
 		
 		Iterator<Point> iter = moves.iterator();
 
