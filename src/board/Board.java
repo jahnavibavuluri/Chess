@@ -422,8 +422,7 @@ public class Board implements Serializable {
 		if (this.check() != null && !this.checkmate())
 			System.out.println("Check");
 		if (!this.checkmate())
-			System.out.println(currentPlayer + "\'s turn: ");
-		
+			System.out.println(currentPlayer + "\'s turn: ");	
 	}
 
 	

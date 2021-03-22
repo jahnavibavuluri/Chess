@@ -28,7 +28,7 @@ public class Chess {
 		while (!game.checkmate() && !resign && !draw) {
 			
 			String input = scanner.nextLine();
-			if (input.equals("resign") && !drawPrompted) {
+			if (input.toLowerCase().equals("resign") && !drawPrompted) {
 				resign = true;
 				break;
 			} 
