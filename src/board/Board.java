@@ -383,6 +383,7 @@ public class Board implements Serializable {
 	
 //------------------------------------------------------drawBoard-------------------------------------------------------
 	public void drawBoard() {
+		System.out.println();
 		String[][] board = new String[8][8];
 		
 		for (int i = 0; i < board.length; i++) {
@@ -422,7 +423,7 @@ public class Board implements Serializable {
 		if (this.check() != null && !this.checkmate())
 			System.out.println("Check");
 		if (!this.checkmate())
-			System.out.println(currentPlayer + "\'s turn: ");	
+			System.out.print(currentPlayer + "\'s move: ");	
 	}
 
 	

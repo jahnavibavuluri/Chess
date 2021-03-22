@@ -36,7 +36,7 @@ public class Chess {
 			//if the last move was a draw prompted by the opponent, the current player MUST accept and enter "draw"
 			if (drawPrompted) {
 				if (!input.equals("draw")) {
-					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s move: ");
 					//break;
 				} else {
 					draw = true;
@@ -71,7 +71,7 @@ public class Chess {
 									game.drawBoard();
 									break;
 								default:
-									System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+									System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s move: ");
 									break;
 							}
 						} else {
@@ -96,7 +96,7 @@ public class Chess {
 						}
 					}
 				} else {
-					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
+					System.out.print("Illegal move, try again \n" + game.currentPlayer + "\'s move: ");
 				}	
 			}
 		}
@@ -112,47 +112,7 @@ public class Chess {
 				System.out.println("White wins");
 		}
 		
-		scanner.close();
-		
-		//game.drawBoard();
-		//System.out.println(start.kingInCheck);
-		
-		/*
-		Point[] a = game.move("g7", "h8");
-		System.out.println(game.currentPlayer);
-		
-		if (game.isValidMove(a)) {
-			System.out.println(game.currentPlayer);
-			if (game.checkPromotion(a)) {
-				//System.out.println(start.currentPlayer);
-				game.promotion(new Knight(game.currentPlayer.toLowerCase(),0,0), a);
-			} else {
-				game.makeMove(a);
-			}
-			
-			//start.makeMove(a);
-			game.drawBoard();
-			//System.out.println(start.kingInCheck);
-			//System.out.println(start.getPieceAt(new Point(5,3)))
-		} else {
-			System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s turn: ");
-		}
-		*/
-		
-		//System.out.println(a[0]);
-		//System.out.println(a[1]);
-		//Board copy = start.tryMove(a);
-		
-		
-		//copy.drawBoard();
-		//start.makeMove(new Point(6,3), new Point(4,3));
-		//start.drawBoard();
-		//start.makeMove(new Point(1,4), new Point(3,4));
-		//start.drawBoard();
-		
-		//Board start_clone = start.clone();
-		//start_clone.drawBoard();
-		
+		scanner.close();	
 	}
 
 }
