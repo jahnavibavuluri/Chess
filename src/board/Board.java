@@ -43,8 +43,6 @@ public class Board implements Serializable {
 	 * Creates a Board object that initializes the 
 	 * pieces on the board as well as makes the current
 	 * player white.
-	 * 
-	 * @return 	Board that is initialized
 	 */
 	public Board() {
 		currentPlayer = "White";

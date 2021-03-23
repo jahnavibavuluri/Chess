@@ -38,7 +38,6 @@ public abstract class Piece implements Serializable{
 	 * @param color		the color of the piece -- either black or white
 	 * @param x			the x location of the piece on the board
 	 * @param y			the y location of the piece on the board
-	 * @return 			Piece with the specified color and location
 	 */
 	public Piece (String color, int x, int y) {
 		this.color = color;

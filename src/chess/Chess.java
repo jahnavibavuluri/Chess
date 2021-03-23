@@ -33,6 +33,7 @@ public class Chess {
 	 * whatever the actual situation may be. So the other player will 
 	 * simply submit "draw" as the entirety of their next move.
 	 * 
+	 * @author Jahnavi Bavuluri and Chiraag Rekhari
 	 * @param args
 	 */
 	public static void main(String[] args) {
