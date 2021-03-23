@@ -20,7 +20,6 @@ import pieces.*;
  * @author Jahnavi Bavuluri and Chiraag Rekhari
  */
 public class Board implements Serializable {
-	
 	/**
 	 * Contains all of the Pieces on the board that are 
 	 * currently in play.
@@ -35,7 +34,7 @@ public class Board implements Serializable {
 	
 	/**
 	 * Contains the King piece that is currently 
-	 * in check; null if there is no King in check.
+	 * in check, null if there is no King in check.
 	 */
 	public Piece kingInCheck = null;
 	
@@ -96,7 +95,7 @@ public class Board implements Serializable {
 	 * 
 	 * @return				a deep copy of the current board
 	 * @throws Exception	throws an exception by the serialization class, 
-	 * 						which is subclass of IOException
+	 * 						which is a subclass of IOException
 	 */
 	public Board deepCopy() throws Exception {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -288,14 +287,11 @@ public class Board implements Serializable {
 	//checks if the move is valid 
 	public boolean isValidMove(Point[] points) {
 		Piece moving = this.getPieceAt(points[0]);
-		//System.out.println(moving.getMoves(this, true));
 		if (moving == null) 
 			return false;
 		if (points[1].x > 7 || points[1].x < 0 || points[1].y < 0 || points[1].y > 7) 
 			return false;
 		if (!(moving.color).equals(currentPlayer.toLowerCase())) {
-			//System.out.println(moving.color);
-			//System.out.println(currentPlayer);
 			return false;
 		} if (!(moving.getMoves(this, true).contains(points[1]))) {
 			return false;
@@ -310,7 +306,7 @@ public class Board implements Serializable {
 	 * king is not in check.
 	 * <p>
 	 * This method is used in each Piece class to return a
-	 * helper board and call the kingInCheck() method on it
+	 * helper board and call the kingInCheck() method on it.
 	 * 
 	 * @param points	the move that is being performed 
 	 * @return			a copy of the current board with the 

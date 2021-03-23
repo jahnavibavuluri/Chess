@@ -48,8 +48,8 @@ public class Queen extends Piece {
 	 */
 	public void lineMovement (Board b, ArrayList<Point> getMoves) {
 		//adds vertical and horizontal moves to the list
-		int x = location.x; //7
-		int y = location.y; //0
+		int x = location.x; 
+		int y = location.y; 
 
 		//down
 		for(int i=x+1; i<8; i++){
@@ -115,8 +115,8 @@ public class Queen extends Piece {
 	 */
 	public void diagMovement (Board b, ArrayList<Point> getMoves) {
 		//adds diagonal moves to the list
-		int x = location.x;//0
-		int y = location.y;//2
+		int x = location.x;
+		int y = location.y;
 		
 		//right down
 		int i = x+1;
@@ -190,7 +190,7 @@ public class Queen extends Piece {
 	/**
 	 * This method calls diagMovement and LineMovement to populate 
 	 * the ArrayList Moves and checks if each move puts its own 
-	 * king in check
+	 * king in check.
 	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check

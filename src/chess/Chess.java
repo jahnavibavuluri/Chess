@@ -13,7 +13,7 @@ public class Chess {
 	 * The main method initializes the chess game and looks for
 	 * user input to make the necessary moves. 
 	 * <p>
-	 * The user must enter the input input of the form "FileRank FileRank", 
+	 * The user must enter the input of the form "FileRank FileRank", 
 	 * where the first file (column) and rank (row) are the coordinates 
 	 * of the piece to be moved, and the second file and rank are the 
 	 * coordinates of where it should end up. As an example, 

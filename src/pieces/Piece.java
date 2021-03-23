@@ -10,7 +10,7 @@ import board.Board;
  * This abstract super class defines common methods that all the pieces 
  * on the chess board need to implement in order to work.
  * <p>
- * This class implements the Serializable interface that used for 
+ * This class implements the Serializable interface that is used for 
  * making deep copies of the board.
  * 
  * @author Chiraag Rekhari and Jahnavi Bavuluri

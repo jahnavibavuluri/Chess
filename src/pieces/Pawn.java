@@ -69,7 +69,7 @@ public class Pawn extends Piece{
 	 * (Does not include capturing)
 	 * 
 	 * @param b			current board object that is being played on
-	 * @param getMoves	arraylist that stores all the valid moves for a 
+	 * @param getMoves	ArrayList that stores all the valid moves for a 
 	 * 					particular pawn object
 	 */
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
