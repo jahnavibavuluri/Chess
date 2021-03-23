@@ -3,11 +3,24 @@ package pieces;
 import java.awt.Point;
 import java.util.*;
 import board.Board;
-
+/**
+ * This class extends the abstract class piece and is 
+ * the class that initializes knight objects and has 
+ * its necessary functions which were inherited from 
+ * the abstract class.
+ * 
+ * @author Chiraag Rekhari and Jahnavi Bavuluri
+ */
 public class Knight extends Piece{
 
-	//public final String name;
-	
+	/**
+	 * The constructor calls the superclasses constructor which sets the color,x,and y. 
+	 * The name is set to wN or bN depending if the color is black or white.
+	 * 
+	 * @param color		the color of the knight
+	 * @param x			the x location of the knight on the board
+	 * @param y			the y location of the knight on the board
+	 */
 	public Knight(String color, int x, int y) {
 		super(color, x, y);
 		if (color.equals("white"))
@@ -16,10 +29,22 @@ public class Knight extends Piece{
 			name = "bN ";
 	}
 	
+	/**
+	 * Getter method that returns the name of the knight.
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * This method populates the getMoves ArrayList with the 
+	 * valid moves for a particular knight object on the board 
+	 * b that is passed in.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid moves 
+	 * 					for a particular knight object
+	 */
 	public void basicMovement (Board b, ArrayList<Point> getMoves) {
 		//adds knight moves to the list
 		int x = location.x;
@@ -54,11 +79,6 @@ public class Knight extends Piece{
 		        iter.remove();
 		}
 		
-		/*for (Point p : getMoves) { 		      
-			if(p.x>7 || p.x<0 || p.y>7 ||p.y<0) {
-				getMoves.remove(p);
-			}
-		}*/
 			
 		Iterator<Point> iter2 = getMoves.iterator();
 		
@@ -78,20 +98,10 @@ public class Knight extends Piece{
 		}
 	}	
 		
-		/*for (Point p : getMoves) {
-			if(this.color.equals("white")) {
-				if (b.getPieceAt(p) != null && (b.getPieceAt(p)).equals("white")){
-					getMoves.remove(p);
-				}
-					}
-			if(this.color.equals("black")) {
-				if (b.getPieceAt(p) != null && (b.getPieceAt(p)).equals("black")){
-					getMoves.remove(p);
-				}
-			}
-		}*/	
-	
-	
+	/**
+	 * This method calls basicMovement to populate the ArrayList 
+	 * Moves and checks if each move puts its own king in check.
+	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();

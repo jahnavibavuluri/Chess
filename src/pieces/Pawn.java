@@ -4,13 +4,32 @@ import java.awt.Point;
 import java.util.*;
 import board.Board;
 
+/**
+ * This class extends the abstract class piece and is the class that initializes pawn
+ * objects and has its necessary functions which were inherited from the abstract
+ * class.
+ * 
+ * @author Chiraag Rekhari and Jahnavi Bavuluri
+ */
 public class Pawn extends Piece{
 	
+	/**
+	 * variable that is toggled true/false depending on if the current 
+	 * pawn can be enpassed by another pawn
+	 */
 	public boolean enpassant;
-	//public final String name;
 
+	/**
+	 * The constructor calls the superclasses constructor which sets the color,x,and y. 
+	 * The name is set to wp or bp depending if the color is black or white.
+	 * 
+	 * @param color			the color of the pawn
+	 * @param x				the x location of the pawn on the board
+	 * @param y				the y location of the pawn on the board
+	 * @param enpassant		set to true if the current pawn can be enpassed by 
+	 * 						another pawn otherwise is false.
+	 */
 	public Pawn(String color, int x, int y, boolean enpassant) {
-		//initializes pawn as a piece with boolean firstMove
 		super(color,x,y);
 		if (color.equals("white"))
 			name = "wp ";
@@ -19,18 +38,40 @@ public class Pawn extends Piece{
 		this.enpassant = enpassant;
 	}
 	
+	/**
+	 * Getter method that returns the name of the pawn
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Getter method that returns the value of the boolean variable enpassant
+	 * 
+	 * @return	true or false depending on the pawns enpassant variable
+	 */
 	public boolean getEnpassant() {
 		return enpassant;
 	}
 	
+	/**
+	 * Setter method that sets the enpassant variable to the parameter given.
+	 * 
+	 * @param b		the boolean value which enpassant variable will be set to
+	 */
 	public void setEnpassant(boolean b) {
 		this.enpassant = b;
 	}
 
+	/**
+	 * This method populates the getMoves ArrayList with the valid moves for 
+	 * a particular pawn object on the board b that is passed in. 
+	 * (Does not include capturing)
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	arraylist that stores all the valid moves for a 
+	 * 					particular pawn object
+	 */
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
 		//checks for the moves where the pawn can move up by one or two steps
 		int x = location.x;
@@ -67,29 +108,25 @@ public class Pawn extends Piece{
 				getMoves.add(p3);
 			}
 		}
-		
-		/*
-		 for(int i=x-1; i>=0; i--){
-			Point p = new Point(i,y);
-			if (b.getPieceAt(p) == null){
-				getMoves.add(p);
-			} else if (!(b.getPieceAt(p).color.equals(this.color))) {
-				getMoves.add(p);
-				break;
-			} else {
-				break;
-			}
-		}
-		 */
 	}
 	
+	/**
+	 * This method checks the immediate left or right of a pawn and 
+	 * checks the following: the correct row for enpassant, pawn 
+	 * to the left or right, pawn with the enpassant variable set 
+	 * to true, pawn is of a different color. If these are true then 
+	 * that point is added to the ArrayList.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid moves 
+	 * 					for a particular pawn object 
+	 */
 	public void empassant(Board b, ArrayList<Point> getMoves) {
-		//checks if the pawn has an opportunity for empassment 
+		//checks if the pawn has an opportunity for enpassant 
 		int row = this.location.x;
 		int col = this.location.y;
 		
 		//check to the immediate right and left of this pawn
-		//edge case when pawn is in the 0th column
 //--------------------------------------------------white--------------------------------------------------
 		if (row == 3) {
 			//edge case when pawn in 0th col
@@ -166,6 +203,15 @@ public class Pawn extends Piece{
 		}
 	}
 	
+	/**
+	 * This method checks the immediate diagonal left and right to see if 
+	 * there is a piece of the opposite color and if so then that point 
+	 * is added to the ArrayList.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid moves for a 
+	 * 					particular pawn object
+	 */
 	public void capture (Board b, ArrayList<Point> getMoves) {
 		//checks if the pawn can capture a piece 
 		int x = location.x;
@@ -218,6 +264,10 @@ public class Pawn extends Piece{
 		}
 	}
 	
+	/**
+	 * This method calls capture, enpassant, and basicMovement to populate the 
+	 * ArrayList Moves and checks if each move puts its own king in check.
+	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();

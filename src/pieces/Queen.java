@@ -4,10 +4,24 @@ import java.awt.Point;
 import java.util.*;
 import board.Board;
 
+/**
+ * This class extends the abstract class piece and 
+ * is the class that initializes queen objects and 
+ * has its necessary functions which were inherited 
+ * from the abstract class.
+ * 
+ * @author Chiraag Rekhari and Jahnavi Bavuluri
+ */
 public class Queen extends Piece {
 
-	//public final String name;
-	
+	/**
+	 * The constructor calls the superclasses constructor which sets the color,x,and y. 
+	 * The name is set to wQ or bQ depending if the color is black or white.
+	 * 
+	 * @param color		the color of the queen
+	 * @param x			the x location of the queen on the board
+	 * @param y			the y location of the queen on the board
+	 */
 	public Queen(String color, int x, int y) {
 		super(color, x, y);
 		if (color.equals("white"))
@@ -16,10 +30,22 @@ public class Queen extends Piece {
 			name = "bQ ";
 	}
 	
+	/**
+	 * Getter method that returns the name of the queen
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * This method populates the getMoves ArrayList with the 
+	 * up, down, left, and right valid moves for a particular 
+	 * queen object on the board b that is passed in.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid 
+	 * 					moves for a particular queen object
+	 */
 	public void lineMovement (Board b, ArrayList<Point> getMoves) {
 		//adds vertical and horizontal moves to the list
 		int x = location.x; //7
@@ -78,6 +104,15 @@ public class Queen extends Piece {
 		}
 	}
 	
+	/**
+	 * This method populates the getMoves ArrayList with the diagonal 
+	 * valid moves for a particular queen object on the board b 
+	 * that is passed in.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid 
+	 * 					moves for a particular queen object
+	 */
 	public void diagMovement (Board b, ArrayList<Point> getMoves) {
 		//adds diagonal moves to the list
 		int x = location.x;//0
@@ -152,6 +187,11 @@ public class Queen extends Piece {
 		}
 	}
 	
+	/**
+	 * This method calls diagMovement and LineMovement to populate 
+	 * the ArrayList Moves and checks if each move puts its own 
+	 * king in check
+	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();

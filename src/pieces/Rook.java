@@ -6,33 +6,67 @@ import java.util.Iterator;
 
 import board.Board;
 
+/**
+ * The Rook class creates a Rook object that extends the abstract
+ * type Piece. It takes care of the basic rook movement as well as the
+ * castling move.
+ * 
+ * @author Chiraag Rekhari and Jahnavi Bavuluri
+ */
 public class Rook extends Piece{
 
+	/**
+	 * variable that is toggled true/false depending on if 
+	 * the current rook can be castled
+	 */
 	public boolean castling;
-	//public final String name;
 	
+	/**
+	 * The constructor calls the superclasses constructor which sets the color,x,and y. 
+	 * The name is set to wR or bR depending if the color is black or white.
+	 * 
+	 * @param color		the color of the rook
+	 * @param x			the x location of the rook on the board
+	 * @param y			the y location of the rook on the board
+	 * @param castling	set to true if the current rook can be castled
+	 */
 	public Rook(String color, int x, int y, boolean castling) {
 		super(color,x,y);
 		this.castling = castling; 
-		//though it may seem that castling will always be set to false when a rook is first created, this is needed for promotion
 		if (color.equals("white"))
 			name = "wR ";
 		else 
 			name = "bR ";
 	}
 	
+	/**
+	 * Getter method that returns the name of the rook.
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Setter method that sets the castling variable to the parameter given.
+	 * 
+	 * @param b		the boolean value which castling variable will be set to
+	 */
 	public void setCastling(boolean b) {
 		this.castling = b;
 	}
 	
+	/**
+	 * This method populates the getMoves ArrayList with the valid 
+	 * moves for a particular rook object on the board b that is passed in.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid moves for 
+	 * 					a particular rook object
+	 */
 	public void basicMovement(Board b, ArrayList<Point> getMoves) {
 		//checks the basic horizontal and vertical movements of the rook
-		int x = location.x; //7
-		int y = location.y; //0
+		int x = location.x; 
+		int y = location.y; 
 
 		//down
 		for(int i=x+1; i<8; i++){
@@ -88,6 +122,10 @@ public class Rook extends Piece{
 		
 	}
 	
+	/**
+	 * This method calls basicMovement to populate the ArrayList 
+	 * Moves and checks if each move puts its own king in check.
+	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
@@ -99,29 +137,12 @@ public class Rook extends Piece{
 			while (iter.hasNext()) {
 			    Point p = iter.next();
 			    Board helper = b.tryMove(new Point[] {this.location, p});
-			    //helper.drawBoard();
 			    if (helper.kingInCheck()) {
 			    	iter.remove();
-			    	//System.out.println("removing!");
 				}
 			}
 		}
-		
-		/*
-		for (int i = 0; i<moves.size(); i++) {
-			Board helper = b.tryMove(new Point[] {this.location, moves.get(i)});
-			if (helper.kingInCheck()) {
-				moves.remove(moves.get(i));
-				i--;
-			}
-		}*/
-		//System.out.println(moves.toString());
 		return moves;
 	}
 	
-
-	public String toString() {
-		return "Rook: " + castling;
-	}
-
 }

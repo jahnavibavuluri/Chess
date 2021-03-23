@@ -9,13 +9,43 @@ import java.io.Serializable;
 import java.util.*;
 import pieces.*;
 
+/**
+ * The Board class creates a board for the chess game to
+ * be played on and takes care of game logic from basic
+ * piece movement to castling, enpassant, and promotion.
+ * <p>
+ * The Board class implements the Serializable interface 
+ * which is used for making deep copies of the board.
+ * 
+ * @author Jahnavi Bavuluri and Chiraag Rekhari
+ */
 public class Board implements Serializable {
 	
-	public ArrayList<Piece> pieces; //contains all the pieces currently in play
-	public String currentPlayer; //the color of who is currently playing
-	public Piece kingInCheck = null;
-	//String inCheck --> color that is currently in check if there is one?
+	/**
+	 * Contains all of the Pieces on the board that are 
+	 * currently in play.
+	 */
+	public ArrayList<Piece> pieces; 
 	
+	/**
+	 * Contains the color of the current player -- 
+	 * either white or black.
+	 */
+	public String currentPlayer; 
+	
+	/**
+	 * Contains the King piece that is currently 
+	 * in check; null if there is no King in check.
+	 */
+	public Piece kingInCheck = null;
+	
+	/**
+	 * Creates a Board object that initializes the 
+	 * pieces on the board as well as makes the current
+	 * player white.
+	 * 
+	 * @return 	Board that is initialized
+	 */
 	public Board() {
 		currentPlayer = "White";
 		pieces = new ArrayList<Piece>();
@@ -59,6 +89,17 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------deepCopy-------------------------------------------------------	
+	/**
+	 * Makes a deep copy of the board - including the 
+	 * individual pieces on the board, their location, 
+	 * and color.
+	 * <p>
+	 * The Serializable interface is used for this method.
+	 * 
+	 * @return				a deep copy of the current board
+	 * @throws Exception	throws an exception by the serialization class, 
+	 * 						which is subclass of IOException
+	 */
 	public Board deepCopy() throws Exception {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bos);
@@ -72,15 +113,32 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------removePiece-------------------------------------------------------	
+	/**
+	 * Removes the specified piece from the board by removing it
+	 * from the pieces ArrayList.
+	 * 
+	 * @param p		the Piece to be removed from the board
+	 */
 	public void removePiece (Piece p) {
-		//this parameter might be changed to point to remove a piece at a specific location
 		pieces.remove(p);
 	}
 //------------------------------------------------------addPiece-------------------------------------------------------	
+	/**
+	 * Adds the specified piece to the board by adding it
+	 * to the pieces ArrayList.
+	 * 
+	 * @param p		the Piece to be added to the board
+	 */
 	public void addPiece (Piece p) {
 		pieces.add(p);
 	}
-//------------------------------------------------------getPieceAt-------------------------------------------------------	
+//------------------------------------------------------getPieceAt-------------------------------------------------------
+	/**
+	 * Gets the piece from the specified location on the board.
+	 * 
+	 * @param p		a Point which specifies a location on the board
+	 * @return		the Piece that is at Point p on the board
+	 */
 	public Piece getPieceAt (Point p) {
 		for (Piece piece:pieces) {
 			if (piece.location.equals(p)) {
@@ -91,10 +149,22 @@ public class Board implements Serializable {
 	}
 
 //------------------------------------------------------kingInCheck-------------------------------------------------------
+	/**
+	 * Used to check if the current players king is in check.
+	 * <p>
+	 * This method is implemented inside each Piece class when 
+	 * finding the valid moves a piece can make on a given board.
+	 * If this method returns true, that move is deleted from the
+	 * valid moves ArrayList as making this move will put the current
+	 * player's own king in check.
+	 * 
+	 * @return		true if the current players king is in check, 
+	 * 				false otherwise
+	 */
 	public boolean kingInCheck () { //checks if the current players king is in check
 		for (Piece p: pieces) {
-			//System.out.println("the current player is: "+ currentPlayer);
-			//when this method is called, a move is already made which is why we are checking if the piece p is the same color as the current player 
+			//when this method is called, a move is already made which is why we are checking 
+			//if the piece p is the same color as the current player 
 			//(they are going to be opposite)
 			if ((p.color).equals(currentPlayer.toLowerCase())) {
 				for (Point point: p.getMoves(this, false)) {
@@ -103,10 +173,7 @@ public class Board implements Serializable {
 						//king will be captured
 						if (!getPieceAt(point).color.equals(currentPlayer.toLowerCase())) {
 						//if the piece is a King and is the NOT same color as the current player this board is invalid
-							//(this is because the current player is actually the opposite so !opposite equals the same color as the player)
-							//System.out.println("king in check!!!");
-							//this.kingInCheck = getPieceAt(point);
-							//System.out.println(this.kingInCheck);
+						//(this is because the current player is actually the opposite so !opposite equals the same color as the player)
 							return true;
 						}
 					}
@@ -117,6 +184,13 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------check-------------------------------------------------------	
+	/**
+	 * Checks the board if the current players king is in 
+	 * check as a result of the opposing team and returns the King
+	 * in check, if one exists.
+	 * 
+	 * @return		the King piece in check if one exists
+	 */
 	public Piece check() {
 		for (Piece p: pieces) {
 			//go through opposing teams pieces and check if currentPlayer king is in check
@@ -134,6 +208,16 @@ public class Board implements Serializable {
 	
 
 //------------------------------------------------------letterToNumber-------------------------------------------------------	
+	/**
+	 * Converts a string into the corresponding column number.
+	 * <p>
+	 * Used for user input. Letter 'a' corresponds to column 0,
+	 * letter 'b' corresponds to column 1 and so on. Used for 
+	 * consistency between all Piece locations and Points.
+	 * 
+	 * @param s		the string to be converted into the corresponding column
+	 * @return		the column number that String s corresponds to
+	 */
 	public int letterToNumber(String s) {
 		switch (s) {
 		case "a":
@@ -157,6 +241,18 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------move-------------------------------------------------------	
+	/**
+	 * Converts the users' string input into an array of Points that 
+	 * constitutes the move that the player is trying to make.
+	 * <p>
+	 * The first Point in the Points array is the starting location
+	 * and the second Point is the ending location.
+	 * 
+	 * @param start		the String starting location of the move as input by the user 
+	 * @param end		the String ending location of the move as input by the user
+	 * @return			a Points array of the move where the first Point in the array 
+	 * 					is the starting location and the second Point is the ending location
+	 */
 	public Point[] move(String start, String end) {
 		//takes the user's input and converts them into Points
 		Point startPoint = new Point();
@@ -176,6 +272,21 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------isValidMove-------------------------------------------------------
+	/**
+	 * Checks the validity of the move and returns true if the move 
+	 * can be made.
+	 * <p>
+	 * This method checks 4 criteria: that there exists a Piece
+	 * on the board at the starting position, that the move is
+	 * a valid point within the range of the board, that the
+	 * piece being moved is of the current player's color,
+	 * and that the move is within the Pieces valid moves.
+	 * 
+	 * @param points	the Points array that stores the starting
+	 * 					location of the move and the ending location
+	 * 					of the move
+	 * @return			true of this move can be made, false otherwise
+	 */
 	//checks if the move is valid 
 	public boolean isValidMove(Point[] points) {
 		Piece moving = this.getPieceAt(points[0]);
@@ -195,9 +306,19 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------tryMove-------------------------------------------------------
-	//make the move on a helper board that Pieces classes can use 
+	/**
+	 * Tries a given move on a copy of the current board to check if 
+	 * the move is a valid move -- i. e. the current players
+	 * king is not in check.
+	 * <p>
+	 * This method is used in each Piece class to return a
+	 * helper board and call the kingInCheck() method on it
+	 * 
+	 * @param points	the move that is being performed 
+	 * @return			a copy of the current board with the 
+	 * 					move performed
+	 */
 	public Board tryMove(Point[] points) {
-	//check if start location is NOT null
 		try {
 			Board copy = this.deepCopy();
 			copy.makeMove(points);
@@ -211,6 +332,14 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------makeMove-------------------------------------------------------
+	/**
+	 * Makes a given move on a board.
+	 * <p>
+	 * The move can be made either on a deep copy of the board or
+	 * on the actual board itself. The move also handles captures.
+	 * 
+	 * @param points	the move that is being made on the board
+	 */
 	public void makeMove(Point[] points) {
 		Piece pieceOnBoard = this.getPieceAt(points[0]); //this is the piece we are moving
 		if (this.getPieceAt(points[1]) != null) { //this IS a capture
@@ -225,23 +354,40 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------firstMove-------------------------------------------------------
+	/**
+	 * Changes the castling boolean value of a 
+	 * Rook or King the first time it is moved.
+	 * <p>
+	 * Used for the castling implementation. If 
+	 * a Rook or King has moved, it can no longer 
+	 * castle. 
+	 * 
+	 * @param points	the move that is being performed 
+	 * 					on the board 	
+	 */
 	public void firstMove(Point[] points) {
 		Piece pieceOnBoard = this.getPieceAt(points[0]);
 		if (pieceOnBoard instanceof Rook) {
 			((Rook) pieceOnBoard).setCastling(false);
-			//this.addPiece(new Rook(currentPlayer.toLowerCase(), points[0].x, points[0].y, false));
-			//this.removePiece(pieceOnBoard);
 		}
 		
 		//if king is being moved, a new king is add to account for the false castling boolean
 		if (pieceOnBoard instanceof King) {
-			((King) pieceOnBoard).setCastling(false);
-			//this.addPiece(new King(currentPlayer.toLowerCase(), points[0].x, points[0].y, false));
-			//this.removePiece(pieceOnBoard);
+			((King) pieceOnBoard).setCastling(false);;
 		}
 	}
 	
 //-----------------------------------------------------doCastle-------------------------------------------------------------
+	/**
+	 * Checks if the move being performed is castling
+	 * and moves the rook to the specified location
+	 * as according to castling rules.
+	 * 
+	 * @param points	the move that is being made 
+	 * 					on the board -- must be a 
+	 * 					castling move for this method 
+	 * 					to change the current board
+	 */
 	public void doCastle(Point[] points) {
 		//white king castling to right side
 		if (points[0].equals(new Point(7,4)) && points[1].equals(new Point(7,6))) {
@@ -263,6 +409,14 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------checkPromotion-------------------------------------------------------
+	/**
+	 * Checks if the move being performed 
+	 * is a pawn promotion.
+	 * 
+	 * @param points	the move being made on the board
+	 * @return			true if this move is a pawn promotion,
+	 * 					false otherwise
+	 */
 	public boolean checkPromotion(Point[] points) {
 		if(this.getPieceAt(points[0]) instanceof Pawn && points[0].x == 1 && ((this.getPieceAt(points[0])).color).equals("white")) {
 			return true;
@@ -274,6 +428,18 @@ public class Board implements Serializable {
 	}
 	
 //------------------------------------------------------promotion-------------------------------------------------------
+	/**
+	 * Actually performs the pawn promotion by adding a new 
+	 * Piece to the pieces ArrayList and deleting the old
+	 * pawn.
+	 * <p>
+	 * Also changes the current player of the board.
+	 * 
+	 * @param promotionPiece	the Piece that the user 
+	 * 							wants to promote the pawn 
+	 * 							to -- can either be Q,N,B,R
+	 * @param points			the move being made on the board
+	 */
 	public void promotion(Piece promotionPiece, Point[] points) {
 		if(this.getPieceAt(points[1]) == null) {
 			pieces.remove(this.getPieceAt(points[0]));
@@ -292,6 +458,11 @@ public class Board implements Serializable {
 	}
 
 //------------------------------------------------------checkmate-------------------------------------------------------
+	/**
+	 * Checks if the current board has a player in checkmate.
+	 * 
+	 * @return	true if the board is in checkmate, false otherwise
+	 */
 	public boolean checkmate() {
 		
 		ArrayList<Point> white = new ArrayList<Point>();
@@ -308,54 +479,48 @@ public class Board implements Serializable {
 					black.add(point);
 				}
 		}
-		
-		//returns true if a player is checkmated
+	
 		return (white.size() == 0 || black.size() == 0) ? true:false;
 	}
 
 //------------------------------------------------------enpassant-------------------------------------------------------
+	/**
+	 * Changes the enpassant conditions on every turn.
+	 * <p>
+	 * Sets all enpassant fields to false for the current
+	 * player to reinitialize the pawns and based on the move
+	 * changes the enpassant fields of the pawn.
+	 * 
+	 * @param points	the move being made on the board 
+	 */
 	public void enpassant(Point[] points) {
 		for(Piece p: pieces) {
 			if(p instanceof Pawn && p.color.equals(currentPlayer.toLowerCase())) {
 				((Pawn) p).setEnpassant(false);
-				/*
-				String temp = p.color;
-				int x = p.location.x;
-				int y = p.location.y;
-				this.removePiece(p);
-				Piece newPawn = new Pawn(temp,x,y,false);
-				pieces.add(newPawn);
-				*/
 			}
 		}
 			
 		Piece pawn = getPieceAt(points[0]);
 		if(pawn instanceof Pawn && pawn.color.equals("white")) {
-			if(points[1].x==4 && points[0].x == 6) { //this is a double jump
+			if(points[1].x==4 && points[0].x == 6) { //double jump
 				((Pawn) pawn).setEnpassant(true);
-				//String temp = pawn.color;
-				//int x = pawn.location.x;
-				//int y = pawn.location.y;
-				//this.removePiece(pawn);
-				//Piece newPawn = new Pawn(temp,x,y,true);
-				//pieces.add(newPawn);
-						//public Pawn(String color, int x, int y, boolean firstMove)
 			}
 		}
+		
 		if(pawn instanceof Pawn && pawn.color.equals("black")) {
 			if(points[1].x==3 && points[0].x == 1) { //double jump
 				((Pawn) pawn).setEnpassant(true);
-				//String temp = pawn.color;
-				//int x = pawn.location.x;
-				//int y = pawn.location.y;
-				//this.removePiece(pawn);
-				//Piece newPawn = new Pawn(temp,x,y,true);
-				//pieces.add(newPawn);
 			}
 		}
 	}
 
 //--------------------------------------------------------doEnpassant---------------------------------------------------
+	/**
+	 * Handles the enpassant move if the given move
+	 * corresponds to an enpassant.
+	 * 
+	 * @param points	the move being made on the board
+	 */
 	public void doEnpassant(Point[] points) {
 		Piece pawn = getPieceAt(points[0]);
 		//change pawn location to the end point
@@ -370,6 +535,14 @@ public class Board implements Serializable {
 	}
 	
 //---------------------------------------------------checkEnpassant----------------------------------
+	/**
+	 * Checks if a given move corresponds to an
+	 * enpassant move.
+	 * 
+	 * @param points	the move being made on the board
+	 * @return			true if the given move is enpassant, 
+	 * 					false otherwise
+	 */
 	public boolean checkEnpassant(Point[] points) {
 		//if the piece being moved is not a pawn, enpassant cannot happen
 		if (!(this.getPieceAt(points[0]) instanceof Pawn)) return false;
@@ -382,6 +555,15 @@ public class Board implements Serializable {
 	
 	
 //------------------------------------------------------drawBoard-------------------------------------------------------
+	/**
+	 * Prints out the board with the names 
+	 * of each piece in its corresponding 
+	 * location. 
+	 * <p> 
+	 * Also checks for check and checkmate 
+	 * and prints out the appropriate messages
+	 * should those conditions be satisfied.
+	 */
 	public void drawBoard() {
 		System.out.println();
 		String[][] board = new String[8][8];
@@ -390,7 +572,6 @@ public class Board implements Serializable {
 			for (int j = 0; j < board[0].length; j++) {
 				for (Piece p: pieces) {
 					if (p.location.equals(new Point(i,j))) {
-						//one if the pieces has a location at (i,j)
 						board[i][j] = p.getName();
 						break;
 					} 
@@ -404,10 +585,7 @@ public class Board implements Serializable {
 			}
 		}
 		
-		//System.out.println(" 0  1  2  3  4  5  6  7");
-		
 		for (int i = 0; i<8; i++) {
-			//System.out.print(i);
 			for (int j = 0; j<8; j++) {
 				System.out.print(board[i][j]);
 			}
@@ -418,7 +596,6 @@ public class Board implements Serializable {
 		
 		System.out.println(" a  b  c  d  e  f  g  h ");
 		System.out.println();
-		//call check to print out "Check"
 		
 		if (this.check() != null && !this.checkmate())
 			System.out.println("Check");

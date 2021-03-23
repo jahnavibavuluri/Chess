@@ -4,10 +4,23 @@ import java.awt.Point;
 import java.util.*;
 import board.Board;
 
+/**
+ * This class extends the abstract class piece and is the class that 
+ * initializes bishop objects and has its necessary functions 
+ * which were inherited from the abstract class.
+ * 
+ * @author Chiraag Rekhari and Jahnavi Bavuluri
+ */
 public class Bishop extends Piece {
 	
-	//public final String name;
-
+	/**
+	 * The constructor calls the superclasses constructor which sets the color,x,and y. 
+	 * The name is set to wB or bB depending if the color is black or white.
+	 * 
+	 * @param color		the color of the bishop
+	 * @param x			the x location of the bishop on the board
+	 * @param y			the y location of the bishop on the board
+	 */
 	public Bishop(String color, int x, int y) {
 		super(color, x, y);
 		if (color.equals("white"))
@@ -16,14 +29,27 @@ public class Bishop extends Piece {
 			name = "bB ";
 	}
 	
+	/**
+	 * Getter method that returns the name of the bishop
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * This method populates the getMoves ArrayList with the valid 
+	 * moves for a particular bishop object on the board b that 
+	 * is passed in.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param getMoves	ArrayList that stores all the valid moves 
+	 * 					for a particular bishop object
+
+	 */
 	public void basicMovement (Board b, ArrayList<Point> getMoves) {
 		//adds diagonal moves to the list
-		int x = location.x;//0
-		int y = location.y;//2
+		int x = location.x;
+		int y = location.y;
 		
 		//right down
 		int i = x+1;
@@ -94,6 +120,10 @@ public class Bishop extends Piece {
 		}
 	}
 	
+	/**
+	 * This method calls basicMovement to populate the ArrayList 
+	 * Moves and checks if each move puts its own king in check
+	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();

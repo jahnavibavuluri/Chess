@@ -4,10 +4,31 @@ import java.awt.Point;
 import java.util.*;
 import board.Board;
 
+/**
+ * This class extends the abstract class piece and is the 
+ * class that initializes king objects and has its 
+ * necessary functions which were inherited from the 
+ * abstract class.
+ * 
+ * @author Chiraag Rekhari and Jahnavi Bavuluri
+ */
 public class King extends Piece{
 
+	/**
+	 * variable that is toggled true/false 
+	 * depending on if the current king can be castled
+	 */
 	public boolean castling;
 	
+	/**
+	 * The constructor calls the superclasses constructor which sets the color,x,and y. 
+	 * The name is set to wK or bK depending if the color is black or white.
+	 * 
+	 * @param color		the color of the king
+	 * @param x			the x location of the king on the board
+	 * @param y			the y location of the king on the board
+	 * @param castling	set to true if the current king can be castled
+	 */
 	public King(String color, int x, int y, boolean castling) {
 		super(color, x, y);
 		if (color.equals("white"))
@@ -18,14 +39,31 @@ public class King extends Piece{
 		this.castling = castling;
 	}
 	
+	/**
+	 * Getter method that returns the name of the king
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Setter method that sets the castling variable to the parameter given.
+	 * 
+	 * @param b		the boolean value which castling variable will be set to
+	 */
 	public void setCastling(boolean b) {
 		this.castling = b;
 	}
 	
+	/**
+	 * This method populates the getMoves ArrayList with the 
+	 * valid moves for a particular king object on the board 
+	 * b that is passed in.
+	 * 
+	 * @param b			current board object that is being played on	
+	 * @param getMoves	ArrayList that stores all the valid moves 
+	 * 					for a particular king object
+	 */
 	public void basicMovement (Board b, ArrayList<Point> getMoves) {
 		int x = location.x;
 		int y = location.y;
@@ -99,6 +137,14 @@ public class King extends Piece{
 			}
 	}
 	
+	/**
+	 * This method adds valid castling moves to the getMoves 
+	 * ArrayList if the king and rook can castle.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param moves		ArrayList that stores all the valid 
+	 * 					moves for a particular king object
+	 */
 	public void castling(Board b, ArrayList<Point> moves) {
 		//check if king has not moved
 		if (!this.castling) return;
@@ -110,9 +156,6 @@ public class King extends Piece{
 		ArrayList<Piece> rooksThatCanCastle = new ArrayList<Piece>();
 		for (Piece p:b.pieces) {
 			if (p instanceof Rook && p.color.equals(this.color) && ((Rook) p).castling) {
-				//System.out.println(this.color);
-				//h2 h4
-			//System.out.println(p.toString() + p.location);
 				rooksThatCanCastle.add(p);
 			}
 		}
@@ -135,8 +178,6 @@ public class King extends Piece{
 						|| b.getPieceAt(new Point(p.location.x, 6))!=null ) {
 					iter.remove();
 				}
-			} else {
-				//System.out.println("ERROR: loop 1 should not go here");
 			}
 		}
 		if (rooksThatCanCastle.isEmpty()) return;
@@ -148,8 +189,7 @@ public class King extends Piece{
 		while(iter2.hasNext()) {
 			Piece p = iter2.next();
 			if (p.location.y == 0) {
-				for (int i = 1; i<4; i++) {
-					//Board helper = b.tryMove(new Point[] {this.location, new Point(this.location.x, i)});	
+				for (int i = 1; i<4; i++) {	
 					if (this.kingInCheck(b,new Point(this.location.x, i) )) {
 				    	iter2.remove();
 				    	break;
@@ -157,15 +197,12 @@ public class King extends Piece{
 				}
 			} else if (p.location.y == 7) {
 				for (int i = 5; i<7; i++) {
-					//Board helper = b.tryMove(new Point[] {this.location, new Point(this.location.x, i)});	
 					if (this.kingInCheck(b, new Point(this.location.x, i))) {
 				    	iter2.remove();
 				    	break;
 					}
 				}
-			} else {
-				//System.out.println("ERROR: loop 2 should not go here");
-			}
+			} 
 		}
 		if (rooksThatCanCastle.isEmpty()) return;
 		
@@ -207,14 +244,24 @@ public class King extends Piece{
 				moves.add(new Point(this.location.x, 2));
 			} else if (p.location.y == 7) {
 				moves.add(new Point(this.location.x, 6));
-			} else {
-				//System.out.println("ERROR: loop 3 should not go here");
-			}
+			} 
 		}
 		
 	}
 	
-	
+	/**
+	 * Checks if the opposing pieces puts the current players
+	 * king in check.
+	 * <p>
+	 * This varies from the board method as this method does not
+	 * include the King pieces. It checks solely for check on the 
+	 * other pieces.
+	 * 
+	 * @param b			current board object that is being played on
+	 * @param point		the location that is being checked to see if it
+	 * 					is in check
+	 * @return			true if the point is in check, false otherwise
+	 */
 	public boolean kingInCheck(Board b, Point point) {
 		ArrayList<Piece> opposingPieces = new ArrayList<Piece>();
 		for (Piece p: b.pieces) {
@@ -232,7 +279,11 @@ public class King extends Piece{
 		return false;
 	}
 	
-	
+	/**
+	 * This method calls castling and basicMovement to 
+	 * populate the ArrayList Moves and checks if each 
+	 * move puts its own king in check
+	 */
 	public ArrayList<Point> getMoves(Board b, boolean check) {
 		//calls the above methods and finally checks if making this move will put its own king in check
 		ArrayList<Point> moves = new ArrayList<Point>();
@@ -244,19 +295,13 @@ public class King extends Piece{
 			while (iter.hasNext()) {
 			    Point p = iter.next();
 			    Board helper = b.tryMove(new Point[] {this.location, p});
-			    //helper.drawBoard();
 			    if (helper.kingInCheck()) {
 			    	iter.remove();
-			    	//System.out.println("removing!");
 				}
 			}
 		}
 		
 		return moves;
-	}
-	
-	public String toString() {
-		return "King: " + castling;
 	}
 
 }
