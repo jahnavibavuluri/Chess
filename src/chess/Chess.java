@@ -54,7 +54,9 @@ public class Chess {
 			} 
 			
 			//if the last move was a draw prompted by the opponent, the current player MUST accept and enter "draw"
-			if (drawPrompted) {
+			if (input.toLowerCase().equals("undo")) {
+				game.undoMove();
+			} else if (drawPrompted) {
 				if (!input.equals("draw")) {
 					System.out.println("Illegal move, try again \n" + game.currentPlayer + "\'s move: ");
 				} else {
@@ -63,8 +65,12 @@ public class Chess {
 				}
 			} else {
 				
-				Point[] move = game.move(input.substring(0,2), input.substring(3,5));
-				
+				Point[] move = new Point[2];
+				if (input.toLowerCase().equals("ai")) {
+					move = game.aiMove();
+				} else {
+					move = game.move(input.substring(0,2), input.substring(3,5));
+				}
 				
 				if (game.isValidMove(move)) {
 					if (game.checkPromotion(move)) {

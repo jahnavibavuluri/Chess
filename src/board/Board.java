@@ -38,6 +38,8 @@ public class Board implements Serializable {
 	 */
 	public Piece kingInCheck = null;
 	
+	public Board previousMove = null;
+	
 	/**
 	 * Creates a Board object that initializes the 
 	 * pieces on the board as well as makes the current
@@ -335,16 +337,63 @@ public class Board implements Serializable {
 	 * @param points	the move that is being made on the board
 	 */
 	public void makeMove(Point[] points) {
-		Piece pieceOnBoard = this.getPieceAt(points[0]); //this is the piece we are moving
-		if (this.getPieceAt(points[1]) != null) { //this IS a capture
-			pieces.remove(this.getPieceAt(points[1])); //remove the captured piece
-		}
-		pieceOnBoard.location = points[1]; //move piece to end
+		try {
+			previousMove = this.deepCopy();
+			//System.out.println("This is the previous move!--------------------");
+			//previousMove.drawBoard();
+			Piece pieceOnBoard = this.getPieceAt(points[0]); //this is the piece we are moving
+			if (this.getPieceAt(points[1]) != null) { //this IS a capture
+				pieces.remove(this.getPieceAt(points[1])); //remove the captured piece
+			}
+			pieceOnBoard.location = points[1]; //move piece to end
 
-		if (currentPlayer.equals("White"))
-			currentPlayer = "Black";
-		else
-			currentPlayer = "White";
+			if (currentPlayer.equals("White"))
+				currentPlayer = "Black";
+			else
+				currentPlayer = "White";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+//-------------------------------------------------------undoMove--------------------------------------------------------
+	
+	public void undoMove() {
+		if (previousMove == null) {
+			//move cannot be undone as there are no moves done or one undo has already been done
+			System.out.println("Illegal move, try again \n" + this.currentPlayer + "\'s move: ");
+		} else {
+			this.pieces = previousMove.pieces;
+			this.currentPlayer = previousMove.currentPlayer;
+			this.kingInCheck = previousMove.kingInCheck;
+			//to fix undo, just make this.previous move null!!!!!!!!!!!!
+			this.previousMove = previousMove.previousMove;
+			this.drawBoard();
+		}
+	}
+	
+//------------------------------------------------------aiMove---------------------------------------------------------
+	//this method just returns a valid that will be used as the given move in the main chess class
+	public Point[] aiMove() {
+		//first get a random piece of the current player
+		Piece random = null;
+		ArrayList<Point> randomMoves = null;
+		for (Piece p: pieces) {
+			//makes sure the piece is the same color as the current player and that it has valid moves 
+			if (p.color.equals(this.currentPlayer.toLowerCase()) && !p.getMoves(this, true).isEmpty()) {
+				random = p;
+				randomMoves = p.getMoves(this, true);
+				break;
+			}
+		}
+		
+		Point[] aimove = new Point[2];
+		aimove[0] = random.location;
+		aimove[1] = randomMoves.get(0);
+		
+		return aimove;
+		
 	}
 	
 //------------------------------------------------------firstMove-------------------------------------------------------
@@ -435,20 +484,26 @@ public class Board implements Serializable {
 	 * @param points			the move being made on the board
 	 */
 	public void promotion(Piece promotionPiece, Point[] points) {
-		if(this.getPieceAt(points[1]) == null) {
-			pieces.remove(this.getPieceAt(points[0]));
-			pieces.add(promotionPiece);
-			promotionPiece.location = points[1];
-		}else {
-			pieces.remove(this.getPieceAt(points[1]));
-			pieces.remove(this.getPieceAt(points[0]));
-			pieces.add(promotionPiece);
-			promotionPiece.location = points[1];
+		try {
+			this.previousMove = this.deepCopy();
+			if(this.getPieceAt(points[1]) == null) {
+				pieces.remove(this.getPieceAt(points[0]));
+				pieces.add(promotionPiece);
+				promotionPiece.location = points[1];
+			}else {
+				pieces.remove(this.getPieceAt(points[1]));
+				pieces.remove(this.getPieceAt(points[0]));
+				pieces.add(promotionPiece);
+				promotionPiece.location = points[1];
+			}
+			if (currentPlayer.equals("White"))
+				currentPlayer = "Black";
+			else
+				currentPlayer = "White";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if (currentPlayer.equals("White"))
-			currentPlayer = "Black";
-		else
-			currentPlayer = "White";
 	}
 
 //------------------------------------------------------checkmate-------------------------------------------------------
@@ -516,16 +571,22 @@ public class Board implements Serializable {
 	 * @param points	the move being made on the board
 	 */
 	public void doEnpassant(Point[] points) {
-		Piece pawn = getPieceAt(points[0]);
-		//change pawn location to the end point
-		pawn.location = points[1];
-		//remove piece in the same row as pawn and same col as the end move
-		this.removePiece(this.getPieceAt(new Point(points[0].x,points[1].y)));
-		
-		if (currentPlayer.equals("White"))
-			currentPlayer = "Black";
-		else
-			currentPlayer = "White";
+		try {
+			previousMove = this.deepCopy();
+			Piece pawn = getPieceAt(points[0]);
+			//change pawn location to the end point
+			pawn.location = points[1];
+			//remove piece in the same row as pawn and same col as the end move
+			this.removePiece(this.getPieceAt(new Point(points[0].x,points[1].y)));
+			
+			if (currentPlayer.equals("White"))
+				currentPlayer = "Black";
+			else
+				currentPlayer = "White";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 //---------------------------------------------------checkEnpassant----------------------------------
